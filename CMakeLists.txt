@@ -12,6 +12,6 @@ project(cosmology)
 set(
         SOURCE_FILES
         src/cosmology.cpp src/cosmology.h
-        src/paradigm.h)
+        src/axioms/paradigm.h src/axioms/interfaces.h src/axioms.h)
 add_library(cosmology STATIC ${SOURCE_FILES})
 target_include_directories(cosmology PRIVATE src)
