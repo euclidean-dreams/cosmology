@@ -1,15 +1,5 @@
 #pragma once
 
-#include <complex>
-#include <vector>
-#include <list>
-#include <unordered_map>
-
-#define PROJECT_NAMESPACE cosmology
-
-////////////////////////
-/////////// language
-/////////////////
 #define up std::unique_ptr
 #define mkup std::make_unique
 #define sp std::shared_ptr
@@ -22,10 +12,3 @@
 #define scint scast<int>
 #define scflt scast<float>
 #define cmplx std::complex<double>
-
-///////////////////
-////// constants
-///////////
-namespace PROJECT_NAMESPACE {
-
-}

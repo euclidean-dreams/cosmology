@@ -2,7 +2,7 @@
 
 #include "axioms.h"
 
-namespace PROJECT_NAMESPACE {
+namespace cosmology {
 
 class Cosmology : public Name {
 public:

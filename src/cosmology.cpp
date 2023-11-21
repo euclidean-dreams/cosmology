@@ -1,6 +1,6 @@
 #include "cosmology.h"
 
-namespace PROJECT_NAMESPACE {
+namespace cosmology {
 
 Cosmology::Cosmology() {
 
