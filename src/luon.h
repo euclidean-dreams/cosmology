@@ -4,7 +4,6 @@
 
 namespace cosmology {
 
-
 class Luon : public Name {
 public:
     float energy = 0;

@@ -6,8 +6,9 @@ namespace cosmology {
 
 class Cosmology : public Name {
 public:
-    Cosmology();
+    Cosmology(int observation_width, int observation_height);
 
+    void experience(sp<Signal<float>> &signal);
 };
 
 }

@@ -18,6 +18,8 @@ set(
         src/axioms/primitive.h
         src/axioms/time.h
         src/cosmology.cpp src/cosmology.h
-        src/psyche.h src/axioms/time.cpp)
+        src/luon.h
+        src/axioms/time.cpp
+        src/axioms/constants.h)
 add_library(cosmology STATIC ${SOURCE_FILES})
 target_include_directories(cosmology PUBLIC src)

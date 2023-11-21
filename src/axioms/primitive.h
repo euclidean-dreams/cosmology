@@ -2,26 +2,24 @@
 
 #include <cmath>
 #include "interfaces.h"
+#include "constants.h"
 
 namespace cosmology {
 
 struct Color {
 public:
-    int red;
-    int green;
-    int blue;
-    int alpha;
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
 };
-
 
 class Point {
 public:
     float x;
     float y;
-    float z;
 
     Point(float x, float y) :
-            x{x}, y{y}, z{0} {}
+            x{x}, y{y} {}
 
     static Point from_polar(Point origin, float radius, float theta) {
         return Point{origin.x + radius * cos(theta), origin.y + radius * sin(theta)};
@@ -61,6 +59,22 @@ public:
 
     size_t size() {
         return samples.size();
+    }
+};
+
+struct Coordinate {
+    int x;
+    int y;
+
+    bool operator==(const Coordinate &other) const {
+        return x == other.x && y == other.y;
+    }
+};
+
+
+struct CoordinateHash {
+    size_t operator()(const Coordinate &locus) const {
+        return locus.y * OBSERVATION_WIDTH + locus.x;
     }
 };
 
