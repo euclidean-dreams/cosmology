@@ -2,4 +2,8 @@
 
 namespace PROJECT_NAMESPACE {
 
+Cosmology::Cosmology() {
+
+}
+
 }

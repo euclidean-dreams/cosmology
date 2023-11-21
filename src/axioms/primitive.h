@@ -4,10 +4,6 @@
 
 namespace PROJECT_NAMESPACE {
 
-class Cosmology : public Name {
-public:
-    Cosmology();
 
-};
 
 }
