@@ -10,6 +10,7 @@ public:
     float prior_energy = 0;
     float delta = 0;
     float prior_delta = 0;
+    float log_energy = 0;
     int fundamental;
 
     Luon(int fundamental) :
@@ -22,6 +23,8 @@ public:
 
         prior_delta = delta;
         delta = energy - prior_energy;
+
+        log_energy = std::log(energy);
     }
 };
 

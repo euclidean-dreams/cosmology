@@ -16,18 +16,25 @@ public:
     }
 
     void paint(Lattice &lattice) {
-        auto size = std::log(luon.energy);
+        auto size = 9 * luon.log_energy;
         for (int y = origin.y - size; y < origin.y + size; y++) {
             for (int x = origin.x - size; x < origin.x + size; x++) {
-                lattice.set_color(x, y, Color{255, 156, 215});
+                auto fade = std::abs(x - origin.x) + std::abs(y - origin.y);
+                uint8_t red = embind(0, 99 * luon.log_energy - fade, 255);
+                uint8_t green = embind(0, 33 * luon.log_energy - fade, 255);
+                uint8_t blue = embind(0, 66 * luon.log_energy - fade, 255);
+                lattice.set_color(x, y, Color{red, green, blue});
             }
         }
     }
 
     void move() {
-        float distance = luon.energy;
-        float direction = 33 * luon.fundamental * (2 * M_PI) / scflt(LUON_COUNT);
+        float distance = luon.log_energy;
+        float direction = 333 * luon.fundamental * (2 * M_PI) / scflt(LUON_COUNT);
         origin = Point::from_polar(origin, distance, direction);
+
+        // gravity
+        origin = Point::from_polar(origin, luon.fundamental / 36963, -direction);
 
         if (origin.x < 0 || origin.x > OBSERVATION_WIDTH) {
             origin.x = scflt(OBSERVATION_WIDTH) / 2;
