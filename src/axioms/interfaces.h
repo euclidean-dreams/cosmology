@@ -1,6 +1,7 @@
 #pragma once
 
 #include <thread>
+#include "macros.h"
 #include "./time.h"
 
 namespace cosmology {
@@ -25,21 +26,9 @@ public:
 
     virtual uint64_t get_tick_interval() = 0;
 
-    static up<std::thread> begin(up<Circlet> circlet) {
-        auto thread = mkup<std::thread>(circle, mv(circlet));
-        return thread;
-    }
+    static up<std::thread> begin(up<Circlet> circlet);
 
-    static void circle(up<Circlet> circlet) {
-        while (!circlet->finished()) {
-            auto cycle_start_time = get_current_time();
-            circlet->activate();
-            auto total_cycle_time = get_elapsed_time(cycle_start_time);
-            if (circlet->get_tick_interval() > total_cycle_time) {
-                sleep(circlet->get_tick_interval() - total_cycle_time);
-            }
-        }
-    }
+    static void circle(up<Circlet> circlet);
 };
 
 }

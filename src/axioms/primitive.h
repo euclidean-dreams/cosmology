@@ -1,8 +1,11 @@
 #pragma once
 
 #include <cmath>
+#include <vector>
+#include <unordered_map>
 #include "interfaces.h"
 #include "constants.h"
+#include "macros.h"
 
 namespace cosmology {
 
@@ -21,11 +24,8 @@ public:
     Point(float x, float y) :
             x{x}, y{y} {}
 
-    static Point from_polar(Point origin, float radius, float theta) {
-        return Point{origin.x + radius * cos(theta), origin.y + radius * sin(theta)};
-    }
+    static Point from_polar(Point origin, float radius, float theta);
 };
-
 
 template<class T>
 class Signal : public Name {
@@ -71,11 +71,32 @@ struct Coordinate {
     }
 };
 
-
 struct CoordinateHash {
     size_t operator()(const Coordinate &locus) const {
         return locus.y * OBSERVATION_WIDTH + locus.x;
     }
+};
+
+class Lattice : public Name {
+private:
+    umap<Coordinate, Color, CoordinateHash> dots;
+
+public:
+    int width;
+    int height;
+    Color null_color;
+
+    explicit Lattice(int width, int height, Color null_color);
+
+    Color get_color(int x, int y) const;
+
+    void set_color(int x, int y, Color color);
+
+    int size() const;
+
+    bool is_valid(int x, int y) const;
+
+    void meld(Lattice &other);
 };
 
 }
