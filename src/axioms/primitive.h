@@ -97,6 +97,15 @@ public:
     bool is_valid(int x, int y) const;
 
     void meld(Lattice &other);
+
+    umap<Coordinate, Color, CoordinateHash>::iterator begin() {
+        return dots.begin();
+    }
+
+    umap<Coordinate, Color, CoordinateHash>::iterator end() {
+        return dots.end();
+    }
+
 };
 
 }
