@@ -16,7 +16,7 @@ public:
     }
 
     void paint(Lattice &lattice) {
-        auto size = 9 * luon.log_energy;
+        auto size = scflt(OBSERVATION_WIDTH) / 333 * luon.log_energy;
         for (int y = origin.y - size; y < origin.y + size; y++) {
             for (int x = origin.x - size; x < origin.x + size; x++) {
                 auto fade = std::abs(x - origin.x) + std::abs(y - origin.y);
@@ -29,7 +29,7 @@ public:
     }
 
     void move() {
-        float distance = luon.log_energy;
+        float distance = scflt(OBSERVATION_WIDTH) / 4444 * luon.log_energy;
         float direction = 333 * luon.fundamental * (2 * M_PI) / scflt(LUON_COUNT);
         origin = Point::from_polar(origin, distance, direction);
 

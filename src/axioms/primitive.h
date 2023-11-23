@@ -1,11 +1,13 @@
 #pragma once
 
+#include <mutex>
 #include <cmath>
 #include <vector>
 #include <unordered_map>
 #include "interfaces.h"
 #include "constants.h"
 #include "macros.h"
+
 
 namespace cosmology {
 
@@ -106,6 +108,37 @@ public:
         return dots.end();
     }
 
+};
+
+template<class T>
+class Arbiter : public Name {
+private:
+    std::mutex mutex;
+    sp<const T> arbit;
+    bool new_data;
+
+public:
+    Arbiter() : mutex{},
+                arbit{nullptr},
+                new_data{false} {
+
+    }
+
+    void give(up<const T> new_arbit) {
+        std::unique_lock<std::mutex> lock{mutex};
+        arbit = move(new_arbit);
+        new_data = true;
+    }
+
+    sp<const T> take() {
+        std::unique_lock<std::mutex> lock{mutex};
+        new_data = false;
+        return arbit;
+    }
+
+    bool ready() const {
+        return new_data;
+    }
 };
 
 }
