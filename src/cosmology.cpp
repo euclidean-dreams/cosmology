@@ -5,6 +5,7 @@ namespace cosmology {
 int OBSERVATION_WIDTH;
 int OBSERVATION_HEIGHT;
 int LUON_COUNT;
+float COSMOLOGY_EXCITATION = 1.0;
 uint64_t world_seed[4] = {333666333, 333999333, 999333999, 999666999};
 
 Cosmology::Cosmology(int observation_width, int observation_height, int luon_count) : current_observation{} {
