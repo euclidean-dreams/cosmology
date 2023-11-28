@@ -18,6 +18,7 @@ set(
         src/axioms/mathematics.cpp src/axioms/mathematics.h
         src/axioms/primitive.cpp src/axioms/primitive.h
         src/axioms/time.cpp src/axioms/time.h
+        src/axioms/premise.h
 
         src/cosmology.cpp src/cosmology.h
         src/luon.h

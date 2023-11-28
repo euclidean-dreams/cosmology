@@ -9,7 +9,4 @@ extern int OBSERVATION_HEIGHT;
 extern int LUON_COUNT;
 extern uint64_t world_seed[4];
 
-// knobs and dials
-extern float COSMOLOGY_EXCITATION;
-
 }
