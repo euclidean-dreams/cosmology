@@ -2,7 +2,7 @@
 
 namespace cosmology {
 
-extern float SPEED;
-extern float SIZE;
+extern float DIRECTION;
+extern float MAGNITUDE;
 
 }
