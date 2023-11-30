@@ -1,7 +1,7 @@
 #pragma once
 
 #include "axioms.h"
-#include "luon.h"
+#include "impression.h"
 
 namespace cosmology {
 
@@ -138,7 +138,7 @@ public:
     }
 };
 
-class HappyPinkHearts : public Name {
+class HappyPinkHearts : public Impression {
 private:
     Glimmering glimmering;
     up<Harmony> harmony;
@@ -162,7 +162,7 @@ public:
         starry_sky.constellate();
     }
 
-    up<Lattice> observe() {
+    up<Lattice> experience() override {
         auto lattice = mkup<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
         for (auto &glimmer: glimmering.glimmers) {
             glimmer->move();

@@ -23,7 +23,9 @@ set(
         src/cosmology.cpp src/cosmology.h
         src/luon.h
 
+        src/impressions/impression.h
         src/impressions/happy_pink_hearts.h
+        src/impressions/workshop.h
 )
 add_library(cosmology STATIC ${SOURCE_FILES})
 target_include_directories(cosmology PUBLIC src)

@@ -1,4 +1,5 @@
 #include "cosmology.h"
+#include "impressions/workshop.h"
 
 namespace cosmology {
 
@@ -19,7 +20,7 @@ Cosmology::Cosmology(int observation_width, int observation_height, int luon_cou
     for (int i = 0; i < LUON_COUNT; i++) {
         harmony_indices.push_back(i);
     }
-    impression = mkup<HappyPinkHearts>(psyche->create_harmony(harmony_indices));
+    impression = mkup<Workshop>(psyche->create_harmony(harmony_indices));
 }
 
 void Cosmology::experience(sp<Signal<float>> &signal) {
@@ -27,7 +28,7 @@ void Cosmology::experience(sp<Signal<float>> &signal) {
 }
 
 up<Lattice> Cosmology::observe() {
-    return impression->observe();
+    return impression->experience();
 }
 
 }
