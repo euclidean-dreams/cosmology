@@ -33,12 +33,23 @@ public:
     }
 };
 
+class Glimmering : public Name {
+public:
+    vec<up<Glimmer>> glimmers;
 
-class Heart {
+    Glimmering() : glimmers{} {};
+
+    void create_glimmer(Luon &luon, Point origin) {
+        auto glimmer = mkup<Glimmer>(luon, origin);
+        glimmers.push_back(mv(glimmer));
+    }
+};
+
+class Square {
 public:
     Glimmer &glimmer;
 
-    Heart(Glimmer &glimmer) : glimmer{glimmer} {
+    Square(Glimmer &glimmer) : glimmer{glimmer} {
 
     }
 
@@ -57,32 +68,108 @@ public:
 
 };
 
-class HappyPinkHearts : public Name {
+class Constellation : public Name {
+public:
+    lst<Glimmer *> stars{};
+    Color color;
+    int fundamental;
+    Point fundamental_point;
+
+    Constellation(int fundamental) :
+            stars{},
+            fundamental{fundamental},
+            fundamental_point{
+                    Point::from_polar(
+                            {scflt(OBSERVATION_WIDTH / 2), scflt(OBSERVATION_HEIGHT / 2)},
+                            OBSERVATION_WIDTH / 4,
+                            scflt(333 * scflt(fundamental) * (2 * M_PI) / scflt(LUON_COUNT)
+                            )
+                    )
+            } {
+        uint8_t red = embind(0, 166 + 33 * Randomizer::generate_proportion(), 255);
+        uint8_t green = embind(0, 33 + 33 * Randomizer::generate_proportion(), 255);
+        uint8_t blue = embind(0, 199 + 33 * Randomizer::generate_proportion(), 255);
+        color = {red, green, blue};
+    }
+
+    void observe(Lattice &lattice) {
+        float star_sum = 0;
+        for (auto star: stars) {
+            star_sum += star->luon.energy;
+        }
+        auto mean = star_sum / stars.size();
+
+        auto size = scflt(OBSERVATION_WIDTH) / 222 * mean * MAGNITUDE;
+        auto origin = stars.front()->origin;
+        for (int y = origin.y - size; y < origin.y + size; y++) {
+            for (int x = origin.x - size; x < origin.x + size; x++) {
+                lattice.set_color(x, y, color);
+            }
+        }
+    }
+};
+
+class StarrySky : public Name {
 private:
-    up<Harmony> harmony;
-    vec<up<Glimmer>> glimmering;
-    vec<Heart> hearts;
+    Glimmering &glimmering;
+    lst<up<Constellation>> constellations;
 
 public:
-    HappyPinkHearts(up<Harmony> harmony) : harmony{mv(harmony)} {
+    StarrySky(Glimmering &glimmering) : glimmering{glimmering} {
+
+    };
+
+    void constellate() {
+        for (int fundamental = 2; fundamental < LUON_COUNT / 2; fundamental++) {
+            auto constellation = mkup<Constellation>(fundamental);
+            for (auto &glimmer: this->glimmering.glimmers) {
+                if (glimmer->luon.fundamental % fundamental == 0) {
+                    constellation->stars.push_front(glimmer.get());
+                }
+            }
+            constellations.push_back(mv(constellation));
+        }
+    };
+
+    void observe(Lattice &lattice) {
+        for (auto &constellation: constellations) {
+            constellation->observe(lattice);
+        }
+    }
+};
+
+class HappyPinkHearts : public Name {
+private:
+    Glimmering glimmering;
+    up<Harmony> harmony;
+    vec<up<Square>> squares;
+    StarrySky starry_sky;
+
+public:
+    HappyPinkHearts(up<Harmony> harmony) :
+            harmony{mv(harmony)},
+            glimmering{},
+            starry_sky{glimmering} {
         for (auto &luon: *this->harmony->luons) {
             float x = OBSERVATION_WIDTH / 2;
             float y = OBSERVATION_HEIGHT / 2;
-            auto glimmer = mkup<Glimmer>(*luon, Point{x, y});
-            glimmering.push_back(mv(glimmer));
+            glimmering.create_glimmer(*luon, Point{x, y});
         }
-        for (auto &glimmer: glimmering) {
-            hearts.emplace_back(*glimmer);
+        for (auto &glimmer: glimmering.glimmers) {
+            auto square = mkup<Square>(*glimmer);
+            squares.push_back(mv(square));
         }
+        starry_sky.constellate();
     }
 
     up<Lattice> observe() {
         auto lattice = mkup<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
-        for (auto &glimmer: glimmering) {
+        for (auto &glimmer: glimmering.glimmers) {
             glimmer->move();
         }
-        for (auto &heart: hearts) {
-            heart.paint(*lattice);
+        starry_sky.observe(*lattice);
+        for (auto &square: squares) {
+            square->paint(*lattice);
         }
         return lattice;
     }

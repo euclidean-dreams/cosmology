@@ -52,4 +52,16 @@ void Lattice::meld(Lattice &other) {
     }
 }
 
+void Lattice::paint_line(Point p1, Point p2, Color color) {
+    auto m = (p2.y - p1.y) / (p2.x - p1.x);
+    auto b = p1.y - m * p1.x;
+    auto max_samples = std::abs(p2.x - p1.x);
+    auto distance_per_sample = (p2.x - p1.x) / max_samples;
+    for (int sample = 0; sample < max_samples; sample++) {
+        auto x = p1.x + sample * distance_per_sample;
+        auto y = m * x + b;
+        set_color(x, y, color);
+    }
+}
+
 }

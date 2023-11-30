@@ -5,9 +5,10 @@ namespace cosmology {
 int OBSERVATION_WIDTH;
 int OBSERVATION_HEIGHT;
 int LUON_COUNT;
+int DELTA_CHAIN_LENGTH = 3;
 float DIRECTION = 1.0;
 float MAGNITUDE = 1.0;
-uint64_t world_seed[4] = {333666333, 333999333, 999333999, 999666999};
+uint64_t WORLD_SEED[4] = {333666333, 333999333, 999333999, 999666999};
 
 Cosmology::Cosmology(int observation_width, int observation_height, int luon_count) : current_observation{} {
     OBSERVATION_WIDTH = observation_width;

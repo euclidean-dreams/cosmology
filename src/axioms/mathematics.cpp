@@ -18,18 +18,18 @@ public:
     }
 
     static uint64_t next(void) {
-        const uint64_t result = rotl(world_seed[0] + world_seed[3], 23) + world_seed[0];
+        const uint64_t result = rotl(WORLD_SEED[0] + WORLD_SEED[3], 23) + WORLD_SEED[0];
 
-        const uint64_t t = world_seed[1] << 17;
+        const uint64_t t = WORLD_SEED[1] << 17;
 
-        world_seed[2] ^= world_seed[0];
-        world_seed[3] ^= world_seed[1];
-        world_seed[1] ^= world_seed[2];
-        world_seed[0] ^= world_seed[3];
+        WORLD_SEED[2] ^= WORLD_SEED[0];
+        WORLD_SEED[3] ^= WORLD_SEED[1];
+        WORLD_SEED[1] ^= WORLD_SEED[2];
+        WORLD_SEED[0] ^= WORLD_SEED[3];
 
-        world_seed[2] ^= t;
+        WORLD_SEED[2] ^= t;
 
-        world_seed[3] = rotl(world_seed[3], 45);
+        WORLD_SEED[3] = rotl(WORLD_SEED[3], 45);
 
         return result;
     }
@@ -48,18 +48,18 @@ public:
         for (int i = 0; i < sizeof JUMP / sizeof *JUMP; i++)
             for (int b = 0; b < 64; b++) {
                 if (JUMP[i] & UINT64_C(1) << b) {
-                    s0 ^= world_seed[0];
-                    s1 ^= world_seed[1];
-                    s2 ^= world_seed[2];
-                    s3 ^= world_seed[3];
+                    s0 ^= WORLD_SEED[0];
+                    s1 ^= WORLD_SEED[1];
+                    s2 ^= WORLD_SEED[2];
+                    s3 ^= WORLD_SEED[3];
                 }
                 next();
             }
 
-        world_seed[0] = s0;
-        world_seed[1] = s1;
-        world_seed[2] = s2;
-        world_seed[3] = s3;
+        WORLD_SEED[0] = s0;
+        WORLD_SEED[1] = s1;
+        WORLD_SEED[2] = s2;
+        WORLD_SEED[3] = s3;
     }
 
 /* This is the long-jump function for the generator. It is equivalent to
@@ -78,18 +78,18 @@ public:
         for (int i = 0; i < sizeof LONG_JUMP / sizeof *LONG_JUMP; i++)
             for (int b = 0; b < 64; b++) {
                 if (LONG_JUMP[i] & UINT64_C(1) << b) {
-                    s0 ^= world_seed[0];
-                    s1 ^= world_seed[1];
-                    s2 ^= world_seed[2];
-                    s3 ^= world_seed[3];
+                    s0 ^= WORLD_SEED[0];
+                    s1 ^= WORLD_SEED[1];
+                    s2 ^= WORLD_SEED[2];
+                    s3 ^= WORLD_SEED[3];
                 }
                 next();
             }
 
-        world_seed[0] = s0;
-        world_seed[1] = s1;
-        world_seed[2] = s2;
-        world_seed[3] = s3;
+        WORLD_SEED[0] = s0;
+        WORLD_SEED[1] = s1;
+        WORLD_SEED[2] = s2;
+        WORLD_SEED[3] = s3;
     }
 };
 

@@ -100,6 +100,8 @@ public:
 
     void meld(Lattice &other);
 
+    void paint_line(Point p1, Point p2, Color color);
+
     umap<Coordinate, Color, CoordinateHash>::iterator begin() {
         return dots.begin();
     }
@@ -107,7 +109,6 @@ public:
     umap<Coordinate, Color, CoordinateHash>::iterator end() {
         return dots.end();
     }
-
 };
 
 template<class T>
