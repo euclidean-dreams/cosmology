@@ -4,43 +4,23 @@
 
 namespace cosmology {
 
-class DeltaChain : public Name {
-public:
-    lst<float> deltas;
-
-    DeltaChain() {
-        for (int i = 0; i < DELTA_CHAIN_LENGTH; i++) {
-            deltas.emplace_back(0);
-        }
-    }
-
-    void record(float energy) {
-        auto delta = energy - deltas.front();
-        deltas.pop_back();
-        deltas.push_front(delta);
-    }
-};
-
 class Luon : public Name {
 public:
     float energy = 0;
     float log_energy = 0;
-    int fundamental;
-    DeltaChain delta_chain;
+    int index;
+    float delta = 0;
+    float previous_energy = 0;
 
-    Luon(int fundamental) :
-            fundamental{fundamental},
-            delta_chain{} {
+    Luon(int index) :
+            index{index} {
     }
 
     void excite(sp<Signal<float>> &signal) {
-        energy = signal->get_sample(fundamental);
-        log_energy = std::log(energy);
-        delta_chain.record(energy);
-    }
-
-    float delta() {
-        return delta_chain.deltas.front();
+        previous_energy = energy;
+        energy = signal->get_sample(index);
+        log_energy = std::log(energy + 1);
+        delta = energy - previous_energy;
     }
 };
 

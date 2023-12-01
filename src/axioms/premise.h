@@ -2,7 +2,10 @@
 
 namespace cosmology {
 
-extern float DIRECTION;
+extern float MOVEMENT;
 extern float MAGNITUDE;
+extern float RESONANCE;
+extern float TWIST;
+extern float CHAOS;
 
 }
