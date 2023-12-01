@@ -27,7 +27,7 @@ public:
             uint8_t green = embind(0, 33 * luon.log_energy, 255);
             uint8_t blue = embind(0, 66 * luon.log_energy - luon.delta * 11, 255);
             lattice.set_color(point.x, point.y, Color{red, green, blue});
-            t += M_PI / (3 * scale) * CHAOS;
+            t += M_PI / (5 * scale) * CHAOS;
         }
     }
 
