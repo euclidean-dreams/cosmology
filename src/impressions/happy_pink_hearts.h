@@ -16,18 +16,21 @@ public:
     }
 
     void paint(Lattice &lattice) {
-        auto max_t = 2.5 * M_PI * luon.energy / 11 * TWIST;
+        auto max_t = luon.energy * TWIST;
         float t = M_PI / 2;
         while (t < max_t) {
-            int offset = std::floor(t / (2 * M_PI));
-            auto scale = scflt(OBSERVATION_WIDTH) / 333 * luon.log_energy * MAGNITUDE;
-            float r = (1 - std::sin(t)) * scale;
-            auto point = Point::from_polar({origin.x, origin.y}, r, t + RESONANCE * offset);
+            int offset = RESONANCE * std::floor(t / (2 * M_PI));
+            auto scale = scflt(OBSERVATION_WIDTH) / 128 * luon.log_energy * MAGNITUDE;
+            float distance = (1 - std::sin(t)) * scale;
+            float theta = t + offset;
+            auto point = Point::from_polar({origin.x, origin.y}, distance, theta);
+
             uint8_t red = embind(0, 99 * luon.log_energy + luon.delta * 22, 255);
             uint8_t green = embind(0, 33 * luon.log_energy, 255);
             uint8_t blue = embind(0, 66 * luon.log_energy - luon.delta * 11, 255);
             lattice.set_color(point.x, point.y, Color{red, green, blue});
-            t += M_PI / (5 * scale) * CHAOS;
+
+            t += M_PI / (7 * scale) * CHAOS;
         }
     }
 
@@ -36,12 +39,12 @@ public:
         origin = Point::from_polar(origin, distance, direction);
 
         if (origin.x < 0 || origin.x > OBSERVATION_WIDTH) {
-            origin.x = scflt(OBSERVATION_WIDTH) / 2;
-            origin.y = scflt(OBSERVATION_HEIGHT) / 2;
+            origin.x = Randomizer::generate(OBSERVATION_WIDTH);
+            origin.y = Randomizer::generate(OBSERVATION_HEIGHT);
         }
         if (origin.y < 0 || origin.y > OBSERVATION_HEIGHT) {
-            origin.x = scflt(OBSERVATION_WIDTH) / 2;
-            origin.y = scflt(OBSERVATION_HEIGHT) / 2;
+            origin.x = Randomizer::generate(OBSERVATION_WIDTH);
+            origin.y = Randomizer::generate(OBSERVATION_HEIGHT);
         }
         direction += TWIST / 999;
     }
@@ -56,8 +59,8 @@ public:
     HappyPinkHearts(up<Harmony> harmony) :
             harmony{mv(harmony)} {
         for (auto &luon: *this->harmony->luons) {
-            float x = OBSERVATION_WIDTH / 2;
-            float y = OBSERVATION_HEIGHT / 2;
+            float x = Randomizer::generate(OBSERVATION_WIDTH);
+            float y = Randomizer::generate(OBSERVATION_HEIGHT);
             auto heart = mkup<Hearts>(*luon, Point{x, y});
             hearts.push_back(mv(heart));
         }
