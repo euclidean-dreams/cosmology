@@ -62,7 +62,7 @@ void Bubble::move() {
     previous_magnitude = energy_mean;
 
     float distance = (0.1 + delta) * MOVEMENT * 10;
-    radius = energy_mean * 44;
+    radius = energy_mean * 22;
     origin = Point::from_polar(origin, distance, direction);
 
     if (origin.x < 0) {
