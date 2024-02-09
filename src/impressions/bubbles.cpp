@@ -62,7 +62,7 @@ void Bubble::move() {
     previous_magnitude = energy_mean;
 
     float distance = (0.1 + delta) * MOVEMENT * 10;
-    radius = energy_mean * 22;
+    radius = energy_mean * MAGNITUDE;
     origin = Point::from_polar(origin, distance, direction);
 
     if (origin.x < 0) {
@@ -79,12 +79,12 @@ void Bubble::move() {
         origin.y = OBSERVATION_HEIGHT - 1;
         direction += M_PI;
     }
-    direction += delta;
+    direction += delta * TWIST;
 }
 
 Effervescence::Effervescence(Psyche &psyche) : psyche{psyche}, background_color{101, 152, 214} {
     // split psyche into harmonies based on fundamental + upper partial combinations
-    for (int fundamental = 2; fundamental < LUON_COUNT / 2; fundamental++) {
+    for (int fundamental = 2; fundamental < LUON_COUNT / (2 * RESONANCE); fundamental++) {
         vec<int> luon_indices{};
         for (int upper_partial_index = fundamental;
              upper_partial_index < LUON_COUNT;
@@ -103,9 +103,9 @@ Effervescence::Effervescence(Psyche &psyche) : psyche{psyche}, background_color{
 
 up<Lattice> Effervescence::experience() {
     if (Randomizer::generate(100) > 90) {
-        background_color.red = embind(100, background_color.red + Randomizer::generate_sign(), 255);
-        background_color.green = embind(100, background_color.green + Randomizer::generate_sign(), 255);
-        background_color.blue = embind(100, background_color.blue + Randomizer::generate_sign(), 255);
+        background_color.red = embind(100, background_color.red + Randomizer::generate_sign() * CHAOS, 255);
+        background_color.green = embind(100, background_color.green + Randomizer::generate_sign() * CHAOS, 255);
+        background_color.blue = embind(100, background_color.blue + Randomizer::generate_sign() * CHAOS, 255);
     }
     auto lattice = mkup<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, background_color);
     for (auto &bubble: bubbles) {
