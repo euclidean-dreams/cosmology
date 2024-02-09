@@ -26,6 +26,7 @@ set(
         src/impressions/impression.h
         src/impressions/happy_pink_hearts.h
         src/impressions/workshop.h
+        src/impressions/bubbles.h src/impressions/bubbles.cpp
 )
 add_library(cosmology STATIC ${SOURCE_FILES})
 target_include_directories(cosmology PUBLIC src)

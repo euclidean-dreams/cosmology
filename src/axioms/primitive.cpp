@@ -3,8 +3,8 @@
 namespace cosmology {
 
 Point Point::from_polar(Point origin, float radius, float theta) {
-    float x = origin.x + radius * cos(theta);
-    float y = origin.y + radius * sin(theta);
+    float x = origin.x + radius * std::cosf(theta);
+    float y = origin.y + radius * std::sinf(theta);
     return Point{x, y};
 }
 
@@ -63,5 +63,29 @@ void Lattice::paint_line(Point p1, Point p2, Color color) {
         set_color(x, y, color);
     }
 }
+
+
+Antechamber::Antechamber(int desired_loungers) :
+        mutex{},
+        notifier{},
+        desired_loungers{desired_loungers},
+        current_loungers{0} {
+
+}
+
+void Antechamber::lounge() {
+    std::unique_lock<std::mutex> lock{mutex};
+    current_loungers++;
+    if (current_loungers == desired_loungers) {
+        notifier.notify_all();
+    } else {
+        notifier.wait(lock);
+    }
+}
+
+void Antechamber::clean() {
+    current_loungers = 0;
+}
+
 
 }

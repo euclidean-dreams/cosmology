@@ -21,7 +21,7 @@ public:
         while (t < max_t) {
             int offset = RESONANCE * std::floor(t / (2 * M_PI));
             auto scale = scflt(OBSERVATION_WIDTH) / 128 * luon.log_energy * MAGNITUDE;
-            float distance = (1 - std::sin(t)) * scale;
+            float distance = (1 - std::sinf(t)) * scale;
             float theta = t + offset;
             auto point = Point::from_polar({origin.x, origin.y}, distance, theta);
 

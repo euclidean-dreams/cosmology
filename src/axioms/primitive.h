@@ -4,6 +4,7 @@
 #include <cmath>
 #include <vector>
 #include <unordered_map>
+#include <condition_variable>
 #include "interfaces.h"
 #include "constants.h"
 #include "macros.h"
@@ -142,4 +143,17 @@ public:
     }
 };
 
+class Antechamber {
+public:
+    std::mutex mutex;
+    std::condition_variable notifier;
+    int desired_loungers;
+    int current_loungers;
+
+    Antechamber(int desired_loungers);
+
+    void lounge();
+
+    void clean();
+};
 }
