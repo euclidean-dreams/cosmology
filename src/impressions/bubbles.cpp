@@ -41,8 +41,8 @@ void Bubble::paint(Lattice &lattice) {
         color.blue = embind(0, effervescence.background_color.blue + Randomizer::generate(99) + border_circles * 33, 255);
         float tincrement = 1 / working_radius;
         for (float t = 0.0; t < 2 * M_PI; t += tincrement) {
-            float x = origin.x + working_radius * std::cosf(t);
-            float y = origin.y + working_radius * std::sinf(t);
+            float x = origin.x + working_radius * std::cos(t);
+            float y = origin.y + working_radius * std::sin(t);
             lattice.set_color(x, y, color);
         }
         for (auto &glimmer: glimmers) {

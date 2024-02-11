@@ -1,7 +1,5 @@
 #include "cosmology.h"
-#include "impressions/happy_pink_hearts.h"
-#include "impressions/workshop.h"
-#include "impressions/bubbles.h"
+#include "impressions/hymn.h"
 
 namespace cosmology {
 
@@ -20,7 +18,7 @@ Cosmology::Cosmology(int observation_width, int observation_height, int luon_cou
     OBSERVATION_HEIGHT = observation_height;
     LUON_COUNT = luon_count;
     psyche = mkup<Psyche>(LUON_COUNT);
-    impression = mkup<Effervescence>(*psyche);
+    impression = mkup<Hymn>(*psyche);
 }
 
 void Cosmology::experience(sp<Signal<float>> &signal) {

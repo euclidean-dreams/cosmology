@@ -19,6 +19,19 @@ public:
     uint8_t blue;
 };
 
+constexpr int HSL_HUE_MAX = 360;
+
+class HSLColor {
+public:
+    int hue;
+    int saturation;
+    int lightness;
+
+    HSLColor(int hue, int saturation, int lightness);
+
+    Color convert_to_rgb() const;
+};
+
 class Point {
 public:
     float x;
