@@ -9,5 +9,7 @@ extern int OBSERVATION_HEIGHT;
 extern int LUON_COUNT;
 extern int DELTA_CHAIN_LENGTH;
 extern uint64_t WORLD_SEED[4];
+extern int THREAD_COUNT;
+extern int RENDER_TIMEOUT_MICROSECONDS;
 
 }

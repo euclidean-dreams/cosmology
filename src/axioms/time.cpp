@@ -16,5 +16,15 @@ void sleep(uint64_t microseconds) {
     std::this_thread::sleep_for(std::chrono::microseconds(microseconds));
 }
 
+Deadline::Deadline(int timeout_microseconds)
+        : start_time{get_current_time()},
+          timeout_microseconds{scast<uint64_t>(timeout_microseconds)} {
+
+}
+
+bool Deadline::finished() const {
+    return get_elapsed_time(start_time) > timeout_microseconds;
+}
+
 }
 

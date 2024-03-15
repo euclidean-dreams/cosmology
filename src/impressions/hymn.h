@@ -9,12 +9,12 @@ class Kenning : public Name {
 public:
     Luon &luon;
     Point origin;
-    float direction;
+    float move_direction;
 
     Kenning(Luon &luon, Point origin)
             : luon{luon},
               origin{origin},
-              direction{scflt(Randomizer::generate_proportion() * 2 * M_PI)} {
+              move_direction{scflt(Randomizer::generate_proportion() * 2 * M_PI)} {
 
     }
 
@@ -30,15 +30,15 @@ public:
 
     void gyfu(Lattice &lattice, Point previous_point, float magnitude, int depth, Color color) {
         if (magnitude > 1) {
-            auto direction = Randomizer::generate(4);
+            auto spread_direction = Randomizer::generate(4);
             Point current_point{previous_point.x, previous_point.y};
-            if (direction == 0) {
+            if (spread_direction == 0) {
                 current_point.x++;
-            } else if (direction == 1) {
+            } else if (spread_direction == 1) {
                 current_point.x--;
-            } else if (direction == 2) {
+            } else if (spread_direction == 2) {
                 current_point.y++;
-            } else if (direction == 3) {
+            } else if (spread_direction == 3) {
                 current_point.y--;
             }
             Color modified_color{
@@ -54,55 +54,119 @@ public:
 
     void move() {
         float distance = (0.1 + abs(luon.delta / 5)) * MOVEMENT;
-        origin = Point::from_polar(origin, distance, direction);
+        origin = Point::from_polar(origin, distance, move_direction);
 
         if (origin.x < 0) {
             origin.x = 0;
-            direction += M_PI;
+            move_direction += M_PI;
         } else if (origin.x >= OBSERVATION_WIDTH) {
             origin.x = OBSERVATION_WIDTH - 1;
-            direction += M_PI;
+            move_direction += M_PI;
         }
         if (origin.y < 0) {
             origin.y = 0;
-            direction += M_PI;
+            move_direction += M_PI;
         } else if (origin.y >= OBSERVATION_HEIGHT) {
             origin.y = OBSERVATION_HEIGHT - 1;
-            direction += M_PI;
+            move_direction += M_PI;
         }
-        direction += 0;
+        move_direction += 0;
+    }
+};
+
+class Bard : public Circlet {
+private:
+    Antechamber &kickoff_antechamber;
+    Antechamber &completion_antechamber;
+    vec<up<Kenning>> kennings;
+    int bard_index;
+    vec<up<Lattice>> &lattices;
+
+
+public:
+    Bard(Antechamber &kickoff_antechamber,
+         Antechamber &completion_antechamber,
+         vec<up<Kenning>> kennings,
+         int bard_index,
+         vec<up<Lattice>> &lattices)
+            : kickoff_antechamber{kickoff_antechamber},
+              completion_antechamber{completion_antechamber},
+              kennings{mv(kennings)},
+              bard_index{bard_index},
+              lattices{lattices} {
+
     }
 
+    void activate() override {
+        kickoff_antechamber.lounge();
+        Deadline deadline{RENDER_TIMEOUT_MICROSECONDS};
+        for (auto &kenning: kennings) {
+            kenning->move();
+            kenning->paint(*lattices[bard_index]);
+            if (deadline.finished()) {
+                break;
+            }
+        }
+        completion_antechamber.lounge();
+    }
 
+    uint64_t get_tick_interval() override {
+        return 0;
+    }
 };
 
 class Hymn : public Impression {
 private:
     Psyche &psyche;
-    vec<up<Kenning>> kennings;
+    Antechamber kickoff_antechamber;
+    Antechamber completion_antechamber;
+    int bard_count;
+    vec<up<std::thread>> bard_threads;
+    vec<up<Lattice>> lattices;
 
 public:
-    Hymn(Psyche &psyche) : psyche{psyche} {
-        vec<int> luon_indices{};
-        for (int i = 0; i < LUON_COUNT; i++) {
-            luon_indices.push_back(i);
-        }
-        auto harmony = this->psyche.create_harmony(luon_indices);
-        for (auto &luon: *harmony->luons) {
-            float x = Randomizer::generate(OBSERVATION_WIDTH);
-            float y = Randomizer::generate(OBSERVATION_HEIGHT);
-            auto kenning = mkup<Kenning>(*luon, Point{x, y});
-            kennings.push_back(mv(kenning));
+    Hymn(Psyche &psyche)
+            : psyche{psyche},
+              bard_count{THREAD_COUNT},
+              kickoff_antechamber{THREAD_COUNT + 1},
+              completion_antechamber{THREAD_COUNT + 1} {
+        for (int bard_index = 0; bard_index < bard_count; bard_index++) {
+            vec<int> luon_indices{};
+            for (int i = 0; i < LUON_COUNT; i++) {
+                if (i % bard_count == bard_index) {
+                    luon_indices.push_back(i);
+                }
+            }
+            auto harmony = this->psyche.create_harmony(luon_indices);
+            vec<up<Kenning>> kennings;
+            for (auto &luon: *harmony->luons) {
+                float x = Randomizer::generate(OBSERVATION_WIDTH);
+                float y = Randomizer::generate(OBSERVATION_HEIGHT);
+                auto kenning = mkup<Kenning>(*luon, Point{x, y});
+                kennings.push_back(mv(kenning));
+            }
+            auto bard = mkup<Bard>(kickoff_antechamber, completion_antechamber, mv(kennings), bard_index, lattices);
+            bard_threads.push_back(Circlet::begin(mv(bard)));
         }
     }
 
     up<Lattice> experience() override {
-        auto lattice = mkup<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
-        for (auto &kenning: kennings) {
-            kenning->move();
-            kenning->paint(*lattice);
+        auto result_lattice = mkup<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
+        for (int i = 0; i < bard_count; i++) {
+            auto lattice = mkup<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
+            lattices.push_back(mv(lattice));
         }
-        return lattice;
+
+        kickoff_antechamber.lounge();
+        kickoff_antechamber.clean();
+        completion_antechamber.lounge();
+        completion_antechamber.clean();
+
+        for (auto &lattice: lattices) {
+            result_lattice->meld(*lattice);
+        }
+        lattices.clear();
+        return result_lattice;
     }
 };
 

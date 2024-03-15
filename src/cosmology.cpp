@@ -12,6 +12,8 @@ float RESONANCE = 1.0;
 float TWIST = 1.0;
 float CHAOS = 1.0;
 uint64_t WORLD_SEED[4] = {333666333, 333999333, 999333999, 999666999};
+int THREAD_COUNT = std::thread::hardware_concurrency();
+int RENDER_TIMEOUT_MICROSECONDS = 5000;
 
 Cosmology::Cosmology(int observation_width, int observation_height, int luon_count) : current_observation{} {
     OBSERVATION_WIDTH = observation_width;
