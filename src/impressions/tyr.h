@@ -5,6 +5,8 @@
 
 namespace cosmology {
 
+int BASE_HUE;
+
 class Kenning : public Name {
 public:
     Luon &luon;
@@ -22,12 +24,18 @@ public:
     }
 
     void paint(Lattice &lattice) {
+        color = {
+                scint(BASE_HUE + luon.log_energy * 33),
+                scint(75 + luon.delta),
+                scint(luon.log_energy * 10)
+
+        };
         if (luon.log_delta > 0.1) {
             Point most_recent_point = origin;
             if (not form.empty()) {
                 most_recent_point = form.front();
             }
-            auto new_point = Point::from_polar(most_recent_point, luon.log_delta, luon.delta);
+            auto new_point = Point::from_polar(most_recent_point, luon.log_delta / 3, luon.delta);
             form.push_front(new_point);
         } else {
             if (not form.empty()) {
@@ -38,12 +46,6 @@ public:
         for (auto &point: form) {
             lattice.set_color(origin.x + point.x, origin.y + point.y, rgb);
         }
-        color = {
-                scint(color.hue + luon.delta / 3),
-                color.saturation,
-                scint(luon.log_energy * 9)
-
-        };
     }
 
 
@@ -131,6 +133,7 @@ public:
     }
 
     up<Lattice> experience() override {
+        BASE_HUE = get_current_time() / 33333 % HSL_HUE_MAX;
         auto result_lattice = mkup<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
         for (int i = 0; i < bard_count; i++) {
             auto lattice = mkup<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
