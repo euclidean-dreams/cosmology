@@ -1,5 +1,5 @@
 #include "cosmology.h"
-#include "impressions/hymn.h"
+#include "impressions/tyr.h"
 
 namespace cosmology {
 
@@ -20,7 +20,7 @@ Cosmology::Cosmology(int observation_width, int observation_height, int luon_cou
     OBSERVATION_HEIGHT = observation_height;
     LUON_COUNT = luon_count;
     psyche = mkup<Psyche>(LUON_COUNT);
-    impression = mkup<Hymn>(*psyche);
+    impression = mkup<Tyr>(*psyche);
 }
 
 void Cosmology::experience(sp<Signal<float>> &signal) {

@@ -10,6 +10,7 @@ public:
     float log_energy = 0;
     int index;
     float delta = 0;
+    float log_delta = 0;
     float previous_energy = 0;
 
     Luon(int index) :
@@ -21,6 +22,11 @@ public:
         energy = signal->get_sample(index);
         log_energy = std::log(energy + 1);
         delta = energy - previous_energy;
+        if (delta > 0) {
+            log_delta = std::log(delta + 1);
+        } else {
+            log_delta = -std::log(1 - delta);
+        }
     }
 };
 
