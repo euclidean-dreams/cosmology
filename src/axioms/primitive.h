@@ -129,7 +129,7 @@ template<class T>
 class Arbiter : public Name {
 private:
     std::mutex mutex;
-    sp<const T> arbit;
+    sptr<const T> arbit;
     bool new_data;
 
 public:
@@ -139,13 +139,13 @@ public:
 
     }
 
-    void give(up<const T> new_arbit) {
+    void give(uptr<const T> new_arbit) {
         std::unique_lock<std::mutex> lock{mutex};
         arbit = move(new_arbit);
         new_data = true;
     }
 
-    sp<const T> take() {
+    sptr<const T> take() {
         std::unique_lock<std::mutex> lock{mutex};
         new_data = false;
         return arbit;

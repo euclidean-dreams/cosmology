@@ -28,7 +28,7 @@ Bubble::Bubble(Effervescence &effervescence, std::unique_ptr<Harmony> harmony, P
           direction{scflt(Randomizer::generate_proportion() * 2 * M_PI)},
           previous_magnitude{0}{
     for (auto &luon: *this->harmony->luons) {
-        auto glimmer = mkup<Glimmer>(*this, *luon);
+        auto glimmer = mkuptr<Glimmer>(*this, *luon);
         glimmers.push_back(mv(glimmer));
     }
 }
@@ -96,18 +96,18 @@ Effervescence::Effervescence(Psyche &psyche) : psyche{psyche}, background_color{
         uint8_t red = embind(0, Randomizer::generate(100), 80);
         uint8_t green = embind(0, Randomizer::generate(300), 160);
         uint8_t blue = embind(30, Randomizer::generate(500), 255);
-        auto bubble = mkup<Bubble>(*this, psyche.create_harmony(luon_indices), Point{x, y}, Color{red, green, blue});
+        auto bubble = mkuptr<Bubble>(*this, psyche.create_harmony(luon_indices), Point{x, y}, Color{red, green, blue});
         bubbles.push_back(mv(bubble));
     }
 }
 
-up<Lattice> Effervescence::experience() {
+uptr<Lattice> Effervescence::experience() {
     if (Randomizer::generate(100) > 90) {
         background_color.red = embind(100, background_color.red + Randomizer::generate_sign() * CHAOS, 255);
         background_color.green = embind(100, background_color.green + Randomizer::generate_sign() * CHAOS, 255);
         background_color.blue = embind(100, background_color.blue + Randomizer::generate_sign() * CHAOS, 255);
     }
-    auto lattice = mkup<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, background_color);
+    auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, background_color);
     for (auto &bubble: bubbles) {
         bubble->move();
         bubble->paint(*lattice);

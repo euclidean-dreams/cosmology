@@ -19,15 +19,15 @@ Cosmology::Cosmology(int observation_width, int observation_height, int luon_cou
     OBSERVATION_WIDTH = observation_width;
     OBSERVATION_HEIGHT = observation_height;
     LUON_COUNT = luon_count;
-    psyche = mkup<Psyche>(LUON_COUNT);
-    impression = mkup<Tyr>(*psyche);
+    psyche = mkuptr<Psyche>(LUON_COUNT);
+    impression = mkuptr<Tyr>(*psyche);
 }
 
-void Cosmology::experience(sp<Signal<float>> &signal) {
+void Cosmology::experience(sptr<Signal<float>> &signal) {
     psyche->perceive(signal);
 }
 
-up<Lattice> Cosmology::observe() {
+uptr<Lattice> Cosmology::observe() {
     return impression->experience();
 }
 

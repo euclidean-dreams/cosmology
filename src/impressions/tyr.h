@@ -58,17 +58,17 @@ class Bard : public Circlet {
 private:
     Antechamber &kickoff_antechamber;
     Antechamber &completion_antechamber;
-    vec<up<Kenning>> kennings;
+    vec<uptr<Kenning>> kennings;
     int bard_index;
-    vec<up<Lattice>> &lattices;
+    vec<uptr<Lattice>> &lattices;
 
 
 public:
     Bard(Antechamber &kickoff_antechamber,
          Antechamber &completion_antechamber,
-         vec<up<Kenning>> kennings,
+         vec<uptr<Kenning>> kennings,
          int bard_index,
-         vec<up<Lattice>> &lattices)
+         vec<uptr<Lattice>> &lattices)
             : kickoff_antechamber{kickoff_antechamber},
               completion_antechamber{completion_antechamber},
               kennings{mv(kennings)},
@@ -101,8 +101,8 @@ private:
     Antechamber kickoff_antechamber;
     Antechamber completion_antechamber;
     int bard_count;
-    vec<up<std::thread>> bard_threads;
-    vec<up<Lattice>> lattices;
+    vec<uptr<std::thread>> bard_threads;
+    vec<uptr<Lattice>> lattices;
 
 public:
     Tyr(Psyche &psyche)
@@ -118,25 +118,25 @@ public:
                 }
             }
             auto harmony = this->psyche.create_harmony(luon_indices);
-            vec<up<Kenning>> kennings;
+            vec<uptr<Kenning>> kennings;
             for (auto &luon: *harmony->luons) {
                 float x = Randomizer::generate(OBSERVATION_WIDTH);
                 float y = Randomizer::generate(OBSERVATION_HEIGHT);
                 int hue = scflt(luon->index) / scflt(LUON_COUNT) * (scflt(HSL_HUE_MAX) / 2);
                 HSLColor color{hue, 100, 50};
-                auto kenning = mkup<Kenning>(*luon, Point{x, y}, color);
+                auto kenning = mkuptr<Kenning>(*luon, Point{x, y}, color);
                 kennings.push_back(mv(kenning));
             }
-            auto bard = mkup<Bard>(kickoff_antechamber, completion_antechamber, mv(kennings), bard_index, lattices);
+            auto bard = mkuptr<Bard>(kickoff_antechamber, completion_antechamber, mv(kennings), bard_index, lattices);
             bard_threads.push_back(Circlet::begin(mv(bard)));
         }
     }
 
-    up<Lattice> experience() override {
+    uptr<Lattice> experience() override {
         BASE_HUE = get_current_time() / 33333 % HSL_HUE_MAX;
-        auto result_lattice = mkup<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
+        auto result_lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
         for (int i = 0; i < bard_count; i++) {
-            auto lattice = mkup<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
+            auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
             lattices.push_back(mv(lattice));
         }
 

@@ -8,7 +8,7 @@ namespace cosmology {
 class Spectrogram : public Name {
 private:
     void record_luon_state() {
-        auto new_signal = mkup<vec<Color>>();
+        auto new_signal = mkuptr<vec<Color>>();
         for (auto &luon: *harmony.luons) {
             auto rectified = luon->delta;
             if(rectified < 0) {
@@ -41,13 +41,13 @@ public:
     int height;
     int width;
     Harmony &harmony;
-    lst<up<vec<Color>>> history;
+    lst<uptr<vec<Color>>> history;
 
     Spectrogram(Harmony &harmony) : harmony{harmony}, history{} {
         width = OBSERVATION_WIDTH;
         height = OBSERVATION_HEIGHT;
         for (int i = 0; i < width; i++) {
-            auto empty_signal = mkup<vec<Color>>();
+            auto empty_signal = mkuptr<vec<Color>>();
             empty_signal->resize(LUON_COUNT, Color{0, 0, 0});
             history.push_front(mv(empty_signal));
         }
@@ -80,18 +80,18 @@ public:
 
 class Workshop : public Impression {
 private:
-    up<Harmony> harmony;
+    uptr<Harmony> harmony;
     Spectrogram spectrogram;
 
 public:
-    Workshop(up<Harmony> harmony) :
+    Workshop(uptr<Harmony> harmony) :
             harmony{mv(harmony)},
             spectrogram(*this->harmony) {
 
     }
 
-    up<Lattice> experience() override {
-        auto lattice = mkup<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
+    uptr<Lattice> experience() override {
+        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
         spectrogram.display(*lattice);
         return lattice;
     }

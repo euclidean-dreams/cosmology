@@ -7,7 +7,7 @@ namespace cosmology {
 
 class Impression : public Name {
 public:
-    virtual up<Lattice> experience() = 0;
+    virtual uptr<Lattice> experience() = 0;
 };
 
 }

@@ -2,10 +2,10 @@
 
 #include <memory>
 
-#define up std::unique_ptr
-#define mkup std::make_unique
-#define sp std::shared_ptr
-#define mksp std::make_shared
+#define uptr std::unique_ptr
+#define sptr std::shared_ptr
+#define mkuptr std::make_unique
+#define mksptr std::make_shared
 #define mv std::move
 #define vec std::vector
 #define lst std::list

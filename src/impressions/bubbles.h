@@ -25,8 +25,8 @@ public:
 
 class Bubble : public Name {
 private:
-    up<Harmony> harmony;
-    vec<up<Glimmer>> glimmers;
+    uptr<Harmony> harmony;
+    vec<uptr<Glimmer>> glimmers;
 
 public:
     Effervescence &effervescence;
@@ -36,7 +36,7 @@ public:
     Color color;
     float previous_magnitude;
 
-    Bubble(Effervescence &effervescence, up<Harmony> harmony, Point origin, Color color);
+    Bubble(Effervescence &effervescence, uptr<Harmony> harmony, Point origin, Color color);
 
     void paint(Lattice &lattice);
 
@@ -47,14 +47,14 @@ public:
 class Effervescence : public Impression {
 private:
     Psyche &psyche;
-    vec<up<Bubble>> bubbles;
+    vec<uptr<Bubble>> bubbles;
 
 public:
     Color background_color;
 
     Effervescence(Psyche &psyche);
 
-    up<Lattice> experience() override;
+    uptr<Lattice> experience() override;
 };
 
 

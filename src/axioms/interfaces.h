@@ -26,9 +26,9 @@ public:
 
     virtual uint64_t get_tick_interval() = 0;
 
-    static up<std::thread> begin(up<Circlet> circlet);
+    static uptr<std::thread> begin(uptr<Circlet> circlet);
 
-    static void circle(up<Circlet> circlet);
+    static void circle(uptr<Circlet> circlet);
 };
 
 }

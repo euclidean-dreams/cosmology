@@ -8,16 +8,16 @@ namespace cosmology {
 
 class Cosmology : public Name {
 private:
-    up<Lattice> current_observation;
-    up<Psyche> psyche;
-    up<Impression> impression;
+    uptr<Lattice> current_observation;
+    uptr<Psyche> psyche;
+    uptr<Impression> impression;
 
 public:
     Cosmology(int observation_width, int observation_height, int luon_count);
 
-    void experience(sp<Signal<float>> &signal);
+    void experience(sptr<Signal<float>> &signal);
 
-    up<Lattice> observe();
+    uptr<Lattice> observe();
 };
 
 }

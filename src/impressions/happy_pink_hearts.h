@@ -52,22 +52,22 @@ public:
 
 class HappyPinkHearts : public Impression {
 private:
-    up<Harmony> harmony;
-    vec<up<Hearts>> hearts;
+    uptr<Harmony> harmony;
+    vec<uptr<Hearts>> hearts;
 
 public:
-    HappyPinkHearts(up<Harmony> harmony) :
+    HappyPinkHearts(uptr<Harmony> harmony) :
             harmony{mv(harmony)} {
         for (auto &luon: *this->harmony->luons) {
             float x = Randomizer::generate(OBSERVATION_WIDTH);
             float y = Randomizer::generate(OBSERVATION_HEIGHT);
-            auto heart = mkup<Hearts>(*luon, Point{x, y});
+            auto heart = mkuptr<Hearts>(*luon, Point{x, y});
             hearts.push_back(mv(heart));
         }
     }
 
-    up<Lattice> experience() override {
-        auto lattice = mkup<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
+    uptr<Lattice> experience() override {
+        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
         for (auto &heart: hearts) {
             heart->move();
             heart->paint(*lattice);

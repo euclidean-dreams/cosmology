@@ -2,8 +2,8 @@
 
 namespace cosmology {
 
-up<std::thread> Circlet::begin(std::unique_ptr<Circlet> circlet) {
-    auto thread = mkup<std::thread>(circle, mv(circlet));
+uptr<std::thread> Circlet::begin(std::unique_ptr<Circlet> circlet) {
+    auto thread = mkuptr<std::thread>(circle, mv(circlet));
     return thread;
 }
 
