@@ -23,6 +23,9 @@ set(
         src/cosmology.cpp src/cosmology.h
         src/luon.h
 
+        src/perception/equalizer.h
+        src/perception/ring_buffer.h
+
         src/impressions/impression.h
         src/impressions/happy_pink_hearts.h
         src/impressions/workshop.h
