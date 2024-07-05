@@ -9,7 +9,7 @@ namespace cosmology {
 float PHI = (1 + sqrt(5)) / 2;
 #define MAX_GLIMMERS_PER_STEP 100
 
-#ifdef RASPI
+#ifdef QUETZAL
 Color background_color = Color{0, 0, 0};
 #else
 Color background_color = Color{21, 106, 132};
