@@ -10,9 +10,9 @@ private:
     std::condition_variable signal_added_expectant{};
     int signal_size;
     int buffer_size;
-    vec<float> internal_buffer{};
-    vec<float>::const_iterator read_iterator{};
-    vec<float>::iterator write_iterator{};
+    vect<float> internal_buffer{};
+    vect<float>::const_iterator read_iterator{};
+    vect<float>::iterator write_iterator{};
 
 public:
     explicit RingBuffer(int frame_size)

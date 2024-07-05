@@ -85,7 +85,7 @@ void Bubble::move() {
 Effervescence::Effervescence(Psyche &psyche) : psyche{psyche}, background_color{101, 152, 214} {
     // split psyche into harmonies based on fundamental + upper partial combinations
     for (int fundamental = 2; fundamental < LUON_COUNT / (2 * RESONANCE); fundamental++) {
-        vec<int> luon_indices{};
+        vect<int> luon_indices{};
         for (int upper_partial_index = fundamental;
              upper_partial_index < LUON_COUNT;
              upper_partial_index += fundamental) {

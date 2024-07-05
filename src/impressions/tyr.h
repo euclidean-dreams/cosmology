@@ -58,17 +58,17 @@ class Bard : public Circlet {
 private:
     Antechamber &kickoff_antechamber;
     Antechamber &completion_antechamber;
-    vec<uptr<Kenning>> kennings;
+    vect<uptr<Kenning>> kennings;
     int bard_index;
-    vec<uptr<Lattice>> &lattices;
+    vect<uptr<Lattice>> &lattices;
 
 
 public:
     Bard(Antechamber &kickoff_antechamber,
          Antechamber &completion_antechamber,
-         vec<uptr<Kenning>> kennings,
+         vect<uptr<Kenning>> kennings,
          int bard_index,
-         vec<uptr<Lattice>> &lattices)
+         vect<uptr<Lattice>> &lattices)
             : kickoff_antechamber{kickoff_antechamber},
               completion_antechamber{completion_antechamber},
               kennings{mv(kennings)},
@@ -101,8 +101,8 @@ private:
     Antechamber kickoff_antechamber;
     Antechamber completion_antechamber;
     int bard_count;
-    vec<uptr<std::thread>> bard_threads;
-    vec<uptr<Lattice>> lattices;
+    vect<uptr<std::thread>> bard_threads;
+    vect<uptr<Lattice>> lattices;
 
 public:
     Tyr(Psyche &psyche)
@@ -111,14 +111,14 @@ public:
               kickoff_antechamber{THREAD_COUNT + 1},
               completion_antechamber{THREAD_COUNT + 1} {
         for (int bard_index = 0; bard_index < bard_count; bard_index++) {
-            vec<int> luon_indices{};
+            vect<int> luon_indices{};
             for (int i = 0; i < LUON_COUNT; i++) {
                 if (i % bard_count == bard_index) {
                     luon_indices.push_back(i);
                 }
             }
             auto harmony = this->psyche.create_harmony(luon_indices);
-            vec<uptr<Kenning>> kennings;
+            vect<uptr<Kenning>> kennings;
             for (auto &luon: *harmony->luons) {
                 float x = Randomizer::generate(OBSERVATION_WIDTH);
                 float y = Randomizer::generate(OBSERVATION_HEIGHT);

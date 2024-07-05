@@ -114,6 +114,32 @@ void Lattice::paint_line(Point p1, Point p2, Color color) {
     }
 }
 
+void Lattice::paint_circle(Point locus, int radius, Color color) {
+    auto min_x = locus.x - radius;
+    if (min_x < 0) {
+        min_x = 0;
+    }
+    auto min_y = locus.y - radius;
+    if (min_y < 0) {
+        min_y = 0;
+    }
+    auto max_x = locus.x + radius;
+    if (max_x >= OBSERVATION_WIDTH) {
+        max_x = OBSERVATION_WIDTH - 1;
+    }
+    auto max_y = locus.y + radius;
+    if (max_y >= OBSERVATION_HEIGHT) {
+        max_y = OBSERVATION_HEIGHT - 1;
+    }
+    for (int y = min_y; y <= max_y; y++) {
+        for (int x = min_x; x <= max_x; x++) {
+            if (radius * radius > (x - locus.x) * (x - locus.x) + (y - locus.y) * (y - locus.y)) {
+                set_color(x, y, color);
+            }
+        }
+    }
+}
+
 
 Antechamber::Antechamber(int desired_loungers) :
         mutex{},

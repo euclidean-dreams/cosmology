@@ -53,7 +53,7 @@ public:
 class HappyPinkHearts : public Impression {
 private:
     uptr<Harmony> harmony;
-    vec<uptr<Hearts>> hearts;
+    vect<uptr<Hearts>> hearts;
 
 public:
     HappyPinkHearts(uptr<Harmony> harmony) :

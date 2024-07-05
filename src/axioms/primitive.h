@@ -46,7 +46,7 @@ public:
 template<class T>
 class Signal : public Name {
 private:
-    vec<T> samples{};
+    vect<T> samples{};
 
 public:
     void push_back(T sample) {
@@ -61,11 +61,11 @@ public:
         samples[index] = sample;
     }
 
-    typename vec<T>::iterator begin() {
+    typename vect<T>::iterator begin() {
         return samples.begin();
     }
 
-    typename vec<T>::iterator end() {
+    typename vect<T>::iterator end() {
         return samples.end();
     }
 
@@ -116,6 +116,8 @@ public:
 
     void paint_line(Point p1, Point p2, Color color);
 
+    void paint_circle(Point locus, int radius, Color color);
+
     umap<Coordinate, Color, CoordinateHash>::iterator begin() {
         return dots.begin();
     }
@@ -141,7 +143,7 @@ public:
 
     void give(uptr<const T> new_arbit) {
         std::unique_lock<std::mutex> lock{mutex};
-        arbit = move(new_arbit);
+        arbit = mv(new_arbit);
         new_data = true;
     }
 

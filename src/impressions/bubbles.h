@@ -26,7 +26,7 @@ public:
 class Bubble : public Name {
 private:
     uptr<Harmony> harmony;
-    vec<uptr<Glimmer>> glimmers;
+    vect<uptr<Glimmer>> glimmers;
 
 public:
     Effervescence &effervescence;
@@ -47,7 +47,7 @@ public:
 class Effervescence : public Impression {
 private:
     Psyche &psyche;
-    vec<uptr<Bubble>> bubbles;
+    vect<uptr<Bubble>> bubbles;
 
 public:
     Color background_color;

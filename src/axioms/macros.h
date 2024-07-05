@@ -7,7 +7,7 @@
 #define mkuptr std::make_unique
 #define mksptr std::make_shared
 #define mv std::move
-#define vec std::vector
+#define vect std::vector
 #define lst std::list
 #define umap std::unordered_map
 #define scast static_cast
