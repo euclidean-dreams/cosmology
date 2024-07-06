@@ -11,11 +11,11 @@ class Cloud : public Name {
 public:
     Luon &luon;
     Point origin;
-    Color color;
+    HSLColor color;
     vect<float> thetas;
     float pole;
 
-    Cloud(Luon &luon, Point origin, Color color)
+    Cloud(Luon &luon, Point origin, HSLColor color)
             : luon{luon},
               origin{origin},
               color{color},
@@ -26,21 +26,28 @@ public:
     }
 
     void paint(Lattice &lattice) {
+        auto color_rgb = color.convert_to_rgb();
         for (int i = 0; i < luon.smooth_log * 3 && i < MAX_LOCI; i++) {
             auto locus = Point::from_polar(origin, Randomizer::generate_proportion() * luon.smooth_log * 9, thetas[i]);
-            lattice.paint_circle(locus, luon.smooth_log * 3, color);
+            lattice.paint_circle(locus, luon.smooth_log * 3, color_rgb);
         }
+        auto mid_color = color;
+        mid_color.saturation += 5;
+        mid_color.lightness += 5;
+        auto mid_color_rgb = mid_color.convert_to_rgb();
         for (int i = 0; i < luon.smooth_log * 3 && i < MAX_LOCI; i++) {
             auto locus = Point::from_polar(origin, Randomizer::generate_proportion() * luon.log_energy * 9, thetas[i]);
             locus = Point::from_polar(locus, luon.smooth_log * 3, pole);
-            auto mid_color = HSLColor{42, 0, 72}.convert_to_rgb();
-            lattice.paint_circle(locus, luon.smooth_log * 3, mid_color);
+            lattice.paint_circle(locus, luon.smooth_log * 3, mid_color_rgb);
         }
+        auto high_color = mid_color;
+        high_color.saturation += 5;
+        high_color.lightness += 5;
+        auto high_color_rgb = high_color.convert_to_rgb();
         for (int i = 0; i < luon.smooth_log * 3 && i < MAX_LOCI; i++) {
             auto locus = Point::from_polar(origin, Randomizer::generate_proportion() * luon.smooth_log * 9, thetas[i]);
             locus = Point::from_polar(locus, luon.smooth_log * 6, pole);
-            auto high_color = HSLColor{42, 0, 88}.convert_to_rgb();
-            lattice.paint_circle(locus, luon.smooth_log * 3, high_color);
+            lattice.paint_circle(locus, luon.smooth_log * 3, high_color_rgb);
         }
     }
 
@@ -79,8 +86,10 @@ public:
         for (auto &luon: *harmony->luons) {
             float x = Randomizer::generate(OBSERVATION_WIDTH);
             float y = Randomizer::generate(OBSERVATION_HEIGHT);
-            auto color = HSLColor{42, 0, 42};
-            auto cloud = mkuptr<Cloud>(*luon, Point{x, y}, color.convert_to_rgb());
+            auto color = HSLColor{(luon->index + 333) % HSL_HUE_MAX,
+                                  50 + Randomizer::generate(50),
+                                  Randomizer::generate(50)};
+            auto cloud = mkuptr<Cloud>(*luon, Point{x, y}, color);
             clouds.push_back(mv(cloud));
         }
     }
