@@ -1,5 +1,5 @@
 #include "cosmology.h"
-#include "impressions/barometer.h"
+#include "impressions/feathered_flight.h"
 
 namespace cosmology {
 
@@ -20,7 +20,7 @@ Cosmology::Cosmology(int observation_width, int observation_height, int luon_cou
     OBSERVATION_HEIGHT = observation_height;
     LUON_COUNT = luon_count;
     psyche = mkuptr<Psyche>(LUON_COUNT);
-    impression = mkuptr<Barometer>(*psyche);
+    impression = mkuptr<FeatheredFlight>(*psyche);
 }
 
 void Cosmology::experience(sptr<Signal<float>> &signal) {
