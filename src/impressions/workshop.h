@@ -18,17 +18,23 @@ private:
             if (anti_rectified > 0) {
                 anti_rectified = 0;
             }
-            uint8_t red = embind(0, 200 * rectified, 255);
-            uint8_t green = embind(0, 3 * luon->energy, 255);
-            uint8_t blue = embind(0, 200 * -anti_rectified, 255);
+            float index_scaler = TWIST * ((100 + luon->index) / 100);
+            uint8_t red = embind(0, 33 * luon->energy * index_scaler, 255);
+            uint8_t green = embind(0, 99 * luon->energy, 255);
+            uint8_t blue = embind(0, CHAOS * -anti_rectified, 255);
             Color color = {red, green, blue};
             new_signal->push_back(color);
         }
 
         int index = 0;
         while (index < new_signal->size()) {
-            index += MOVEMENT * 10;
-            (*new_signal)[index] = {99, 99, 99};
+            index += RESONANCE;
+            auto current_color = (*new_signal)[index];
+            (*new_signal)[index] = Color{
+                    scast<uint8_t>(embind(0, current_color.red + 33, 255)),
+                    scast<uint8_t>(embind(0, current_color.green + 33, 255)),
+                    scast<uint8_t>(embind(0, current_color.blue + 33, 255))
+            };
         }
 
         history.push_front(mv(new_signal));

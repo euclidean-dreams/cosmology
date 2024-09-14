@@ -36,6 +36,7 @@ set(
         src/impressions/barometer.h
         src/impressions/feathered_flight.h
         src/impressions/calibration.h
+        src/impressions/watercolor.h
 )
 add_library(cosmology STATIC ${SOURCE_FILES})
 target_include_directories(cosmology PUBLIC src)
