@@ -72,7 +72,7 @@ public:
                 auto y = 0;
                 for (auto &color: *signal) {
                     for (int vertical_spread = 0; vertical_spread < MAGNITUDE; vertical_spread++) {
-                        lattice.set_color(x, y, color);
+                        lattice.set_pith(x, y, Pith{color});
                         y++;
                     }
                     if (y > OBSERVATION_HEIGHT) {
@@ -100,7 +100,7 @@ public:
     }
 
     uptr<Lattice> experience() override {
-        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
+        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{Color{0, 0, 0}});
         spectrogram.display(*lattice);
         return lattice;
     }

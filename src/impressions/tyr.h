@@ -44,7 +44,7 @@ public:
         }
         auto rgb = color.convert_to_rgb();
         for (auto &point: form) {
-            lattice.set_color(origin.x + point.x, origin.y + point.y, rgb);
+            lattice.set_pith(origin.x + point.x, origin.y + point.y, Pith{rgb});
         }
     }
 
@@ -134,9 +134,9 @@ public:
 
     uptr<Lattice> experience() override {
         BASE_HUE = get_current_time() / 33333 % HSL_HUE_MAX;
-        auto result_lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
+        auto result_lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{Color{0, 0, 0}});
         for (int i = 0; i < bard_count; i++) {
-            auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
+            auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{Color{0, 0, 0}});
             lattices.push_back(mv(lattice));
         }
 

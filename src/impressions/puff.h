@@ -29,7 +29,7 @@ public:
         auto color_rgb = color.convert_to_rgb();
         for (int i = 0; i < luon.smooth_log * 3 && i < MAX_LOCI; i++) {
             auto locus = Point::from_polar(origin, Randomizer::generate_proportion() * luon.smooth_log * 9, thetas[i]);
-            lattice.paint_circle(locus, luon.smooth_log * 3, color_rgb);
+            lattice.paint_circle(locus, luon.smooth_log * 3, Pith{color_rgb});
         }
         auto mid_color = color;
         mid_color.saturation += 5;
@@ -38,7 +38,7 @@ public:
         for (int i = 0; i < luon.smooth_log * 3 && i < MAX_LOCI; i++) {
             auto locus = Point::from_polar(origin, Randomizer::generate_proportion() * luon.log_energy * 9, thetas[i]);
             locus = Point::from_polar(locus, luon.smooth_log * 3, pole);
-            lattice.paint_circle(locus, luon.smooth_log * 3, mid_color_rgb);
+            lattice.paint_circle(locus, luon.smooth_log * 3, Pith{mid_color_rgb});
         }
         auto high_color = mid_color;
         high_color.saturation += 5;
@@ -47,7 +47,7 @@ public:
         for (int i = 0; i < luon.smooth_log * 3 && i < MAX_LOCI; i++) {
             auto locus = Point::from_polar(origin, Randomizer::generate_proportion() * luon.smooth_log * 9, thetas[i]);
             locus = Point::from_polar(locus, luon.smooth_log * 6, pole);
-            lattice.paint_circle(locus, luon.smooth_log * 3, high_color_rgb);
+            lattice.paint_circle(locus, luon.smooth_log * 3, Pith{high_color_rgb});
         }
     }
 
@@ -95,7 +95,7 @@ public:
     }
 
     uptr<Lattice> experience() override {
-        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
+        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{Color{0, 0, 0}});
         for (auto &cloud: clouds) {
             cloud->paint(*lattice);
             cloud->move();

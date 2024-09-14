@@ -46,7 +46,7 @@ public:
                     scast<uint8_t>(embind(0, color.green + Randomizer::generate(2), 255)),
                     scast<uint8_t>(embind(0, color.blue + Randomizer::generate(2), 255)),
             };
-            lattice.set_color(current_point.x, current_point.y, modified_color);
+            lattice.set_pith(current_point.x, current_point.y, Pith{modified_color});
             gyfu(lattice, current_point, magnitude - 0.1, depth + 1, modified_color);
         }
     }
@@ -151,9 +151,9 @@ public:
     }
 
     uptr<Lattice> experience() override {
-        auto result_lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
+        auto result_lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{Color{0, 0, 0}});
         for (int i = 0; i < bard_count; i++) {
-            auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
+            auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{Color{0, 0, 0}});
             lattices.push_back(mv(lattice));
         }
 

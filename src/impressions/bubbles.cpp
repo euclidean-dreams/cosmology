@@ -15,7 +15,7 @@ void Glimmer::paint(Lattice &lattice) {
     for (int i = 0; i < size; i++) {
         auto theta = i * ((2 * M_PI) / size) + (2 * M_PI) * Randomizer::generate_proportion();
         auto point = Point::from_polar(bubble.origin, bubble.radius * Randomizer::generate_proportion(), theta);
-        lattice.set_color(point.x, point.y, Color{red, green, blue});
+        lattice.set_pith(point.x, point.y, Pith{Color{red, green, blue}});
     }
 }
 
@@ -26,7 +26,7 @@ Bubble::Bubble(Effervescence &effervescence, std::unique_ptr<Harmony> harmony, P
           color{color},
           radius{scflt(this->harmony->luons->size())},
           direction{scflt(Randomizer::generate_proportion() * 2 * M_PI)},
-          previous_magnitude{0}{
+          previous_magnitude{0} {
     for (auto &luon: *this->harmony->luons) {
         auto glimmer = mkuptr<Glimmer>(*this, *luon);
         glimmers.push_back(mv(glimmer));
@@ -36,14 +36,17 @@ Bubble::Bubble(Effervescence &effervescence, std::unique_ptr<Harmony> harmony, P
 void Bubble::paint(Lattice &lattice) {
     auto working_radius = embind_flt(0, radius, OBSERVATION_WIDTH / 3);
     for (int border_circles = 0; border_circles < 2; border_circles++) {
-        color.red = embind(0, effervescence.background_color.red + Randomizer::generate(99) + border_circles * 33, 255);
-        color.green = embind(0, effervescence.background_color.green + Randomizer::generate(99) + border_circles * 33, 255);
-        color.blue = embind(0, effervescence.background_color.blue + Randomizer::generate(99) + border_circles * 33, 255);
+        auto red = effervescence.background_color.red;
+        auto green = effervescence.background_color.green;
+        auto blue = effervescence.background_color.blue;
+        color.red = embind(0, red + Randomizer::generate(99) + border_circles * 33, 255);
+        color.green = embind(0, green + Randomizer::generate(99) + border_circles * 33, 255);
+        color.blue = embind(0, blue + Randomizer::generate(99) + border_circles * 33, 255);
         float tincrement = 1 / working_radius;
         for (float t = 0.0; t < 2 * M_PI; t += tincrement) {
             float x = origin.x + working_radius * std::cos(t);
             float y = origin.y + working_radius * std::sin(t);
-            lattice.set_color(x, y, color);
+            lattice.set_pith(x, y, Pith{color});
         }
         for (auto &glimmer: glimmers) {
             glimmer->paint(lattice);
@@ -107,7 +110,7 @@ uptr<Lattice> Effervescence::experience() {
         background_color.green = embind(100, background_color.green + Randomizer::generate_sign() * CHAOS, 255);
         background_color.blue = embind(100, background_color.blue + Randomizer::generate_sign() * CHAOS, 255);
     }
-    auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, background_color);
+    auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{background_color});
     for (auto &bubble: bubbles) {
         bubble->move();
         bubble->paint(*lattice);

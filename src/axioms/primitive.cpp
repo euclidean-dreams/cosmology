@@ -58,26 +58,26 @@ Point Point::from_polar(Point origin, float radius, float theta) {
     return Point{x, y};
 }
 
-Lattice::Lattice(int width, int height, Color null_color) :
-        dots{},
+Lattice::Lattice(int width, int height, Pith null_pith) :
+        piths{},
         width{width},
         height{height},
-        null_color{null_color} {
+        null_pith{null_pith} {
 
 }
 
-Color Lattice::get_color(int x, int y) const {
-    auto dot = dots.find({x, y});
-    if (dot != dots.end()) {
+Pith Lattice::get_pith(int x, int y) const {
+    auto dot = piths.find({x, y});
+    if (dot != piths.end()) {
         return dot->second;
     } else {
-        return null_color;
+        return null_pith;
     }
 }
 
-void Lattice::set_color(int x, int y, Color color) {
+void Lattice::set_pith(int x, int y, Pith pith) {
     if (is_valid(x, y)) {
-        dots.insert_or_assign({x, y}, color);
+        piths.insert_or_assign({x, y}, pith);
     }
 }
 
@@ -95,14 +95,14 @@ bool Lattice::is_valid(int x, int y) const {
 }
 
 void Lattice::meld(Lattice &other) {
-    for (auto &dot: other.dots) {
-        if (dots.find(dot.first) == dots.end()) {
-            dots.insert_or_assign(dot.first, dot.second);
+    for (auto &dot: other.piths) {
+        if (piths.find(dot.first) == piths.end()) {
+            piths.insert_or_assign(dot.first, dot.second);
         }
     }
 }
 
-void Lattice::paint_line(Point p1, Point p2, Color color) {
+void Lattice::paint_line(Point p1, Point p2, Pith pith) {
     auto m = (p2.y - p1.y) / (p2.x - p1.x);
     auto b = p1.y - m * p1.x;
     auto max_samples = std::abs(p2.x - p1.x);
@@ -110,11 +110,11 @@ void Lattice::paint_line(Point p1, Point p2, Color color) {
     for (int sample = 0; sample < max_samples; sample++) {
         auto x = p1.x + sample * distance_per_sample;
         auto y = m * x + b;
-        set_color(x, y, color);
+        set_pith(x, y, pith);
     }
 }
 
-void Lattice::paint_circle(Point locus, int radius, Color color) {
+void Lattice::paint_circle(Point locus, int radius, Pith pith) {
     auto min_x = locus.x - radius;
     if (min_x < 0) {
         min_x = 0;
@@ -134,7 +134,7 @@ void Lattice::paint_circle(Point locus, int radius, Color color) {
     for (int y = min_y; y <= max_y; y++) {
         for (int x = min_x; x <= max_x; x++) {
             if (radius * radius > (x - locus.x) * (x - locus.x) + (y - locus.y) * (y - locus.y)) {
-                set_color(x, y, color);
+                set_pith(x, y, pith);
             }
         }
     }

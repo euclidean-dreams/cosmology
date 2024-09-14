@@ -28,7 +28,7 @@ public:
             uint8_t red = embind(0, 99 * luon.log_energy + luon.delta * 22, 255);
             uint8_t green = embind(0, 33 * luon.log_energy, 255);
             uint8_t blue = embind(0, 66 * luon.log_energy - luon.delta * 11, 255);
-            lattice.set_color(point.x, point.y, Color{red, green, blue});
+            lattice.set_pith(point.x, point.y, Pith{Color{red, green, blue}});
 
             t += M_PI / (7 * scale) * CHAOS;
         }
@@ -52,13 +52,20 @@ public:
 
 class HappyPinkHearts : public Impression {
 private:
-    uptr<Harmony> harmony;
+    Psyche &psyche;
     vect<uptr<Hearts>> hearts;
 
 public:
-    HappyPinkHearts(uptr<Harmony> harmony) :
-            harmony{mv(harmony)} {
-        for (auto &luon: *this->harmony->luons) {
+    HappyPinkHearts(Psyche &psyche)
+            : psyche{psyche},
+              hearts{} {
+        vect<int> luon_indices{};
+        luon_indices.reserve(LUON_COUNT);
+        for (int i = 0; i < LUON_COUNT; i++) {
+            luon_indices.push_back(i);
+        }
+        auto harmony = this->psyche.create_harmony(luon_indices);
+        for (auto &luon: *harmony->luons) {
             float x = Randomizer::generate(OBSERVATION_WIDTH);
             float y = Randomizer::generate(OBSERVATION_HEIGHT);
             auto heart = mkuptr<Hearts>(*luon, Point{x, y});
@@ -67,7 +74,7 @@ public:
     }
 
     uptr<Lattice> experience() override {
-        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{0, 0, 0});
+        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{Color{0, 0, 0}});
         for (auto &heart: hearts) {
             heart->move();
             heart->paint(*lattice);

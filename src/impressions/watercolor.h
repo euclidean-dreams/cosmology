@@ -40,7 +40,7 @@ public:
                 radius = OBSERVATION_WIDTH / 33;
             }
             if (radius > OBSERVATION_WIDTH / 333) {
-                lattice.paint_circle(adjusted_point, radius, current_color.convert_to_rgb());
+                lattice.paint_circle(adjusted_point, radius, Pith{current_color.convert_to_rgb()});
             }
             point.x += Randomizer::generate(OBSERVATION_WIDTH / 333) * Randomizer::generate_sign();
             point.y += Randomizer::generate(OBSERVATION_WIDTH / 333) * Randomizer::generate_sign();
@@ -96,7 +96,7 @@ public:
     }
 
     uptr<Lattice> experience() override {
-        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Color{255, 255, 255});
+        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{Color{255, 255, 255}});
         for (auto &splash: splashes) {
             splash->move();
             splash->paint(*lattice);

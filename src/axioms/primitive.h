@@ -93,20 +93,30 @@ struct CoordinateHash {
     }
 };
 
+class Pith {
+public:
+    Color color;
+    float magnitude;
+
+    Pith(Color color) : color{color}, magnitude{1} {}
+
+    Pith(Color color, float magnitude) : color{color}, magnitude{magnitude} {}
+};
+
 class Lattice : public Name {
 private:
-    umap<Coordinate, Color, CoordinateHash> dots;
+    umap<Coordinate, Pith, CoordinateHash> piths;
 
 public:
     int width;
     int height;
-    Color null_color;
+    Pith null_pith;
 
-    explicit Lattice(int width, int height, Color null_color);
+    explicit Lattice(int width, int height, Pith null_pith);
 
-    Color get_color(int x, int y) const;
+    Pith get_pith(int x, int y) const;
 
-    void set_color(int x, int y, Color color);
+    void set_pith(int x, int y, Pith pith);
 
     int size() const;
 
@@ -114,16 +124,16 @@ public:
 
     void meld(Lattice &other);
 
-    void paint_line(Point p1, Point p2, Color color);
+    void paint_line(Point p1, Point p2, Pith pith);
 
-    void paint_circle(Point locus, int radius, Color color);
+    void paint_circle(Point locus, int radius, Pith pith);
 
-    umap<Coordinate, Color, CoordinateHash>::iterator begin() {
-        return dots.begin();
+    umap<Coordinate, Pith, CoordinateHash>::iterator begin() {
+        return piths.begin();
     }
 
-    umap<Coordinate, Color, CoordinateHash>::iterator end() {
-        return dots.end();
+    umap<Coordinate, Pith, CoordinateHash>::iterator end() {
+        return piths.end();
     }
 };
 
