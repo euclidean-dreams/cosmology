@@ -97,10 +97,13 @@ class Pith {
 public:
     Color color;
     float magnitude;
+    float twist;
 
-    Pith(Color color) : color{color}, magnitude{1} {}
+    Pith(Color color) : color{color}, magnitude{1}, twist{0} {}
 
-    Pith(Color color, float magnitude) : color{color}, magnitude{magnitude} {}
+    Pith(Color color, float magnitude) : color{color}, magnitude{magnitude}, twist{0} {}
+
+    Pith(Color color, float magnitude, float twist) : color{color}, magnitude{magnitude}, twist{twist} {}
 };
 
 class Lattice : public Name {
@@ -111,8 +114,9 @@ public:
     int width;
     int height;
     Pith null_pith;
+    bool tessellate;
 
-    explicit Lattice(int width, int height, Pith null_pith);
+    explicit Lattice(int width, int height, Pith null_pith, bool tessellate = false);
 
     Pith get_pith(int x, int y) const;
 
@@ -123,10 +127,6 @@ public:
     bool is_valid(int x, int y) const;
 
     void meld(Lattice &other);
-
-    void paint_line(Point p1, Point p2, Pith pith);
-
-    void paint_circle(Point locus, int radius, Pith pith);
 
     umap<Coordinate, Pith, CoordinateHash>::iterator begin() {
         return piths.begin();

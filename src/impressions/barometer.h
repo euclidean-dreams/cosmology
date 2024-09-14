@@ -33,7 +33,7 @@ public:
 
     void paint(Lattice &lattice) {
         if (luon.smooth_log / 2 > 1) {
-            lattice.paint_circle(origin, luon.smooth_log / 2, Pith{color});
+            lattice.set_pith(origin.x, origin.y, Pith{color, luon.smooth_log});
         }
     }
 
@@ -77,7 +77,7 @@ public:
 
     void paint(Lattice &lattice) {
         for (auto &point: path) {
-            lattice.set_pith(point.x, point.y, Pith{color});
+            lattice.set_pith(point.x, point.y, Pith{color, 2});
         }
 
         for (auto &glimmer: glimmers) {
@@ -163,7 +163,7 @@ public:
     }
 
     uptr<Lattice> experience() override {
-        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{background_color});
+        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{background_color}, true);
         for (auto &dial: dials) {
             dial->paint(*lattice);
             dial->move();

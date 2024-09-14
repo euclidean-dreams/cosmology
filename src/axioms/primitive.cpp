@@ -58,11 +58,12 @@ Point Point::from_polar(Point origin, float radius, float theta) {
     return Point{x, y};
 }
 
-Lattice::Lattice(int width, int height, Pith null_pith) :
+Lattice::Lattice(int width, int height, Pith null_pith, bool tessellate) :
         piths{},
         width{width},
         height{height},
-        null_pith{null_pith} {
+        null_pith{null_pith},
+        tessellate{tessellate} {
 
 }
 
@@ -101,45 +102,6 @@ void Lattice::meld(Lattice &other) {
         }
     }
 }
-
-void Lattice::paint_line(Point p1, Point p2, Pith pith) {
-    auto m = (p2.y - p1.y) / (p2.x - p1.x);
-    auto b = p1.y - m * p1.x;
-    auto max_samples = std::abs(p2.x - p1.x);
-    auto distance_per_sample = (p2.x - p1.x) / max_samples;
-    for (int sample = 0; sample < max_samples; sample++) {
-        auto x = p1.x + sample * distance_per_sample;
-        auto y = m * x + b;
-        set_pith(x, y, pith);
-    }
-}
-
-void Lattice::paint_circle(Point locus, int radius, Pith pith) {
-    auto min_x = locus.x - radius;
-    if (min_x < 0) {
-        min_x = 0;
-    }
-    auto min_y = locus.y - radius;
-    if (min_y < 0) {
-        min_y = 0;
-    }
-    auto max_x = locus.x + radius;
-    if (max_x >= OBSERVATION_WIDTH) {
-        max_x = OBSERVATION_WIDTH - 1;
-    }
-    auto max_y = locus.y + radius;
-    if (max_y >= OBSERVATION_HEIGHT) {
-        max_y = OBSERVATION_HEIGHT - 1;
-    }
-    for (int y = min_y; y <= max_y; y++) {
-        for (int x = min_x; x <= max_x; x++) {
-            if (radius * radius > (x - locus.x) * (x - locus.x) + (y - locus.y) * (y - locus.y)) {
-                set_pith(x, y, pith);
-            }
-        }
-    }
-}
-
 
 Antechamber::Antechamber(int desired_loungers) :
         mutex{},
