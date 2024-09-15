@@ -27,13 +27,15 @@ public:
             loci.pop_front();
         }
         while (loci.size() < luon.energy * 3) {
-            Point splat{Randomizer::generate(loci.size() * OBSERVATION_WIDTH / (TWIST * 333)) * Randomizer::generate_sign(),
-                        Randomizer::generate(loci.size() * OBSERVATION_HEIGHT / (TWIST * 333)) * Randomizer::generate_sign()};
+            Point splat{
+                    Randomizer::generate(luon.energy * TWIST * OBSERVATION_WIDTH / 33) * Randomizer::generate_sign(),
+                    Randomizer::generate(luon.energy * TWIST * OBSERVATION_HEIGHT / 33) * Randomizer::generate_sign()};
             loci.push_front(splat);
         }
         int index = 0;
         for (auto &point: loci) {
-            auto current_color = HSLColor{color.hue, color.saturation, color.lightness + index * 3};
+            int lightness = color.lightness + index * 3;
+            auto current_color = HSLColor{color.hue, color.saturation, lightness};
             auto adjusted_point = Point{origin.x + point.x, origin.y + point.y};
             auto radius = MAGNITUDE * (luon.energy * 9 - index);
             if (radius > MAGNITUDE * OBSERVATION_WIDTH / 33) {
@@ -65,7 +67,6 @@ public:
             origin.y = OBSERVATION_HEIGHT - 1;
             direction += M_PI;
         }
-        direction += TWIST / 99;
     }
 };
 
