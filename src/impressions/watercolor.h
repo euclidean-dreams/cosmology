@@ -27,23 +27,21 @@ public:
             loci.pop_front();
         }
         while (loci.size() < luon.energy * 3) {
-            Point splat{Randomizer::generate(loci.size() * OBSERVATION_WIDTH / 100) * Randomizer::generate_sign(),
-                        Randomizer::generate(loci.size() * OBSERVATION_HEIGHT / 100) * Randomizer::generate_sign()};
+            Point splat{Randomizer::generate(loci.size() * OBSERVATION_WIDTH / (TWIST * 333)) * Randomizer::generate_sign(),
+                        Randomizer::generate(loci.size() * OBSERVATION_HEIGHT / (TWIST * 333)) * Randomizer::generate_sign()};
             loci.push_front(splat);
         }
         int index = 0;
         for (auto &point: loci) {
             auto current_color = HSLColor{color.hue, color.saturation, color.lightness + index * 3};
             auto adjusted_point = Point{origin.x + point.x, origin.y + point.y};
-            auto radius = luon.energy * 9 - index;
-            if (radius > OBSERVATION_WIDTH / 33) {
-                radius = OBSERVATION_WIDTH / 33;
+            auto radius = MAGNITUDE * (luon.energy * 9 - index);
+            if (radius > MAGNITUDE * OBSERVATION_WIDTH / 33) {
+                radius = MAGNITUDE * OBSERVATION_WIDTH / 33;
             }
-            if (radius > OBSERVATION_WIDTH / 333) {
-                float twist = 2 * M_PI * Randomizer::generate_proportion();
-                lattice.set_pith(adjusted_point.x, adjusted_point.y,
-                                 Pith{current_color.convert_to_rgb(), radius, twist});
-            }
+            float twist = 2 * M_PI * Randomizer::generate_proportion();
+            lattice.set_pith(adjusted_point.x, adjusted_point.y,
+                             Pith{current_color.convert_to_rgb(), radius, twist});
             point.x += Randomizer::generate(OBSERVATION_WIDTH / 333) * Randomizer::generate_sign();
             point.y += Randomizer::generate(OBSERVATION_WIDTH / 333) * Randomizer::generate_sign();
             index++;
