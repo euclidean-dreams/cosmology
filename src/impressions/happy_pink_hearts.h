@@ -3,7 +3,8 @@
 #include "axioms.h"
 #include "impression.h"
 
-namespace cosmology {
+using namespace cosmology;
+namespace happy_pink_hearts {
 
 class Hearts {
 public:

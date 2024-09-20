@@ -1,6 +1,7 @@
 #include "bubbles.h"
 
-namespace cosmology {
+using namespace cosmology;
+namespace bubbles {
 
 
 Glimmer::Glimmer(Bubble &bubble, Luon &luon) : bubble{bubble}, luon{luon} {

@@ -3,7 +3,8 @@
 #include "impression.h"
 #include "axioms.h"
 
-namespace cosmology {
+using namespace cosmology;
+namespace hymn {
 
 class Kenning : public Name {
 public:

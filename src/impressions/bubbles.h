@@ -3,8 +3,8 @@
 #include "axioms.h"
 #include "impression.h"
 
-
-namespace cosmology {
+using namespace cosmology;
+namespace bubbles {
 
 class Bubble;
 

@@ -3,7 +3,8 @@
 #include "axioms.h"
 #include "impression.h"
 
-namespace cosmology {
+using namespace cosmology;
+namespace watercolor {
 
 class Splash : public Name {
 public:

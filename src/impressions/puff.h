@@ -3,7 +3,8 @@
 #include "axioms.h"
 #include "impression.h"
 
-namespace cosmology {
+using namespace cosmology;
+namespace puff {
 
 #define MAX_LOCI 100
 

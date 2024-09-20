@@ -3,7 +3,8 @@
 #include "impression.h"
 #include "axioms.h"
 
-namespace cosmology {
+using namespace cosmology;
+namespace tyr {
 
 int BASE_HUE;
 

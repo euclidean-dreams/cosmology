@@ -3,7 +3,8 @@
 #include "axioms.h"
 #include "impression.h"
 
-namespace cosmology {
+using namespace cosmology;
+namespace calibration {
 
 class Calibration : public Impression {
 private:

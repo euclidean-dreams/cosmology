@@ -4,7 +4,8 @@
 #include "axioms.h"
 #include "impression.h"
 
-namespace cosmology {
+using namespace cosmology;
+namespace barometer {
 
 float PHI = (1 + sqrt(5)) / 2;
 #define MAX_GLIMMERS_PER_STEP 100

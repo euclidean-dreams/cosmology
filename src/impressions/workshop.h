@@ -3,7 +3,8 @@
 #include "axioms.h"
 #include "impression.h"
 
-namespace cosmology {
+using namespace cosmology;
+namespace workshop {
 
 class Spectrogram : public Name {
 private:
