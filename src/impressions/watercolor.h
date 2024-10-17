@@ -35,12 +35,12 @@ public:
         }
         int index = 0;
         for (auto &point: loci) {
-            int lightness = color.lightness + index * 3;
+            int lightness = color.lightness + index;
             auto current_color = HSLColor{color.hue, color.saturation, lightness};
             auto adjusted_point = Point{origin.x + point.x, origin.y + point.y};
             auto radius = MAGNITUDE * (luon.energy * 9 - index);
-            if (radius > MAGNITUDE * OBSERVATION_WIDTH / 33) {
-                radius = MAGNITUDE * OBSERVATION_WIDTH / 33;
+            if (radius > MAGNITUDE * OBSERVATION_WIDTH / 9) {
+                radius = MAGNITUDE * OBSERVATION_WIDTH / 9;
             }
             float twist = 2 * M_PI * Randomizer::generate_proportion();
             lattice.set_pith(adjusted_point.x, adjusted_point.y,
@@ -68,6 +68,9 @@ public:
             origin.y = OBSERVATION_HEIGHT - 1;
             direction += M_PI;
         }
+        auto center_drift_direction = std::atan2(scflt(OBSERVATION_HEIGHT) / 2 - origin.y,
+                                                 scflt(OBSERVATION_WIDTH) / 2 - origin.x);
+        origin = Point::from_polar(origin, OBSERVATION_WIDTH / 2222, center_drift_direction);
     }
 };
 
@@ -87,8 +90,8 @@ public:
         }
         auto harmony = this->psyche.create_harmony(luon_indices);
         for (auto &luon: *harmony->luons) {
-            float x = Randomizer::generate(OBSERVATION_WIDTH);
-            float y = Randomizer::generate(OBSERVATION_HEIGHT);
+            float x = OBSERVATION_WIDTH / 2;
+            float y = OBSERVATION_HEIGHT / 2;
             auto color = HSLColor{Randomizer::generate(HSL_HUE_MAX),
                                   50 + Randomizer::generate(50),
                                   33 + Randomizer::generate(50)};
@@ -98,7 +101,7 @@ public:
     }
 
     uptr<Lattice> experience() override {
-        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{Color{255, 255, 255}}, true);
+        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{Color{0, 0, 0}}, true);
         for (auto &splash: splashes) {
             splash->move();
             splash->paint(*lattice);
