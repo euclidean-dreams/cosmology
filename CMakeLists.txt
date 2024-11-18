@@ -37,6 +37,7 @@ set(
         src/impressions/calibration.h
         src/impressions/watercolor.h
         src/impressions/juice.h
+        src/impressions/here_there_be_dragons.h
 )
 add_library(cosmology STATIC ${SOURCE_FILES})
 target_include_directories(cosmology PUBLIC src)

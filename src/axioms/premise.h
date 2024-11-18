@@ -7,5 +7,6 @@ extern float MAGNITUDE;
 extern float RESONANCE;
 extern float TWIST;
 extern float CHAOS;
+extern float COLOR;
 
 }

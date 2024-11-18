@@ -98,12 +98,17 @@ public:
     Color color;
     float magnitude;
     float twist;
+    int tesselation;
 
-    Pith(Color color) : color{color}, magnitude{1}, twist{0} {}
+    Pith(Color color) : color{color}, magnitude{1}, twist{0}, tesselation{0} {}
 
-    Pith(Color color, float magnitude) : color{color}, magnitude{magnitude}, twist{0} {}
+    Pith(Color color, float magnitude) : color{color}, magnitude{magnitude}, twist{0}, tesselation{0} {}
 
-    Pith(Color color, float magnitude, float twist) : color{color}, magnitude{magnitude}, twist{twist} {}
+    Pith(Color color, float magnitude, float twist) : color{color}, magnitude{magnitude}, twist{twist},
+                                                      tesselation{0} {}
+
+    Pith(Color color, float magnitude, float twist, int tesselation) : color{color}, magnitude{magnitude}, twist{twist},
+                                                                       tesselation{tesselation} {}
 };
 
 class Lattice : public Name {

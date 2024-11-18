@@ -16,7 +16,8 @@ enum Impressions {
     puff,
     tyr,
     watercolor,
-    workshop
+    workshop,
+    here_there_be_dragons
 };
 
 

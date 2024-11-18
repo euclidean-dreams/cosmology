@@ -9,6 +9,7 @@
 #include "impressions/puff.h"
 #include "impressions/tyr.h"
 #include "impressions/workshop.h"
+#include "impressions/here_there_be_dragons.h"
 
 namespace cosmology {
 
@@ -20,6 +21,7 @@ float MAGNITUDE = 1.0;
 float RESONANCE = 1.0;
 float TWIST = 1.0;
 float CHAOS = 1.0;
+float COLOR = 1.0;
 uint64_t WORLD_SEED[4] = {333666333, 333999333, 999333999, 999666999};
 int THREAD_COUNT = std::thread::hardware_concurrency();
 int RENDER_TIMEOUT_MICROSECONDS = 5000;
@@ -50,6 +52,8 @@ Cosmology::Cosmology(int observation_width, int observation_height, int luon_cou
         impression = mkuptr<watercolor::Watercolor>(*psyche);
     } else if (impression_choice == Impressions::workshop) {
         impression = mkuptr<workshop::Workshop>(*psyche);
+    } else if (impression_choice == Impressions::here_there_be_dragons) {
+        impression = mkuptr<here_there_be_dragons::HereThereBeDragons>(*psyche);
     }
 }
 

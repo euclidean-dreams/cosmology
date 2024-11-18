@@ -12,6 +12,18 @@ static inline int embind(int lower_bound, int value, int upper_bound) {
     return value;
 }
 
+static inline float cyclic_embind(int lower_bound, int value, int upper_bound) {
+    while (value > upper_bound) {
+        auto diff = std::abs(value - upper_bound);
+        value = lower_bound + diff;
+    }
+    while (value < lower_bound) {
+        auto diff = std::abs(value - lower_bound);
+        value = upper_bound - diff - 1;
+    }
+    return value;
+}
+
 static inline float embind_flt(float lower_bound, float value, float upper_bound) {
     if (value > upper_bound) value = upper_bound;
     if (value < lower_bound) value = lower_bound;

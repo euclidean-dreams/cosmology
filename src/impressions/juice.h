@@ -100,7 +100,7 @@ public:
     }
 
     uptr<Lattice> experience() override {
-        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{Color{255, 255, 255}});
+        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{Color{0, 0, 0}}, true);
         for (auto &curve: curves) {
             curve->move();
             curve->paint(*lattice);

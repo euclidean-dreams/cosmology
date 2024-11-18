@@ -1,0 +1,118 @@
+#pragma once
+
+#include "axioms.h"
+#include "impression.h"
+
+using namespace cosmology;
+namespace here_there_be_dragons {
+
+class Dragon : public Name {
+public:
+    Luon &luon;
+    Point origin;
+    HSLColor color;
+    float direction;
+    lst<Point> loci;
+    float rotation;
+
+    Dragon(Luon &luon, Point origin, HSLColor color)
+            : luon{luon},
+              origin{origin},
+              color{color},
+              rotation{scflt(Randomizer::generate_proportion() * 2 * M_PI)},
+              direction{scflt(Randomizer::generate_proportion() * 2 * M_PI)},
+              loci{} {
+
+    }
+
+    void paint(Lattice &lattice) {
+        while (loci.size() > luon.energy * 3) {
+            loci.pop_front();
+        }
+        while (loci.size() < luon.energy * 3) {
+            Point splat{
+                    Randomizer::generate(luon.energy * TWIST * OBSERVATION_WIDTH / 33) * Randomizer::generate_sign(),
+                    Randomizer::generate(luon.energy * TWIST * OBSERVATION_HEIGHT / 33) * Randomizer::generate_sign()};
+            loci.push_front(splat);
+        }
+        int index = 0;
+        for (auto &point: loci) {
+            int lightness = color.lightness;
+            int hue = cyclic_embind(0, COLOR + 44 * CHAOS, HSL_HUE_MAX);
+            auto current_color = HSLColor{hue, color.saturation, lightness};
+            auto adjusted_point = Point{origin.x + point.x, origin.y + point.y};
+            auto tesselation = 1;
+            auto radius = MAGNITUDE * (luon.energy * 99 - index);
+            if (radius > MAGNITUDE * OBSERVATION_WIDTH / 9) {
+                radius = MAGNITUDE * OBSERVATION_WIDTH / 9;
+            }
+            if (std::abs(luon.delta) > 1) {
+                tesselation = 0;
+                radius /= 9;
+            }
+            lattice.set_pith(adjusted_point.x, adjusted_point.y,
+                             Pith{current_color.convert_to_rgb(), radius, rotation, tesselation});
+            point.x += Randomizer::generate(OBSERVATION_WIDTH / 333) * Randomizer::generate_sign();
+            point.y += Randomizer::generate(OBSERVATION_WIDTH / 333) * Randomizer::generate_sign();
+            index++;
+        }
+        rotation += cyclic_embind(0, luon.delta / 33, 2 * M_PI);
+    }
+
+    void move() {
+        float distance = std::abs(luon.delta * 3) * MOVEMENT;
+        origin = Point::from_polar(origin, distance, direction);
+        if (origin.x < 0) {
+            origin.x = 0;
+            direction += M_PI;
+        } else if (origin.x >= OBSERVATION_WIDTH) {
+            origin.x = OBSERVATION_WIDTH - 1;
+            direction += M_PI;
+        }
+        if (origin.y < 0) {
+            origin.y = 0;
+            direction += M_PI;
+        } else if (origin.y >= OBSERVATION_HEIGHT) {
+            origin.y = OBSERVATION_HEIGHT - 1;
+            direction += M_PI;
+        }
+    }
+};
+
+class HereThereBeDragons : public Impression {
+private:
+    Psyche &psyche;
+    vect<uptr<Dragon>> dragons;
+
+public:
+    HereThereBeDragons(Psyche &psyche)
+            : psyche{psyche},
+              dragons{} {
+        vect<int> luon_indices{};
+        luon_indices.reserve(LUON_COUNT);
+        for (int i = 0; i < LUON_COUNT; i++) {
+            luon_indices.push_back(i);
+        }
+        auto harmony = this->psyche.create_harmony(luon_indices);
+        for (auto &luon: *harmony->luons) {
+            float x = OBSERVATION_WIDTH / 2;
+            float y = OBSERVATION_HEIGHT / 2;
+            auto color = HSLColor{Randomizer::generate(HSL_HUE_MAX),
+                                  50 + Randomizer::generate(50),
+                                  33 + Randomizer::generate(50)};
+            auto dragon = mkuptr<Dragon>(*luon, Point{x, y}, color);
+            dragons.push_back(mv(dragon));
+        }
+    }
+
+    uptr<Lattice> experience() override {
+        auto lattice = mkuptr<Lattice>(OBSERVATION_WIDTH, OBSERVATION_HEIGHT, Pith{Color{0, 0, 0}}, true);
+        for (auto &dragon: dragons) {
+            dragon->move();
+            dragon->paint(*lattice);
+        }
+        return lattice;
+    }
+};
+
+}
