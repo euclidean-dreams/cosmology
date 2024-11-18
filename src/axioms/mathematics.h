@@ -13,13 +13,13 @@ static inline int embind(int lower_bound, int value, int upper_bound) {
 }
 
 static inline float cyclic_embind(int lower_bound, int value, int upper_bound) {
-    while (value > upper_bound) {
+    while (value >= upper_bound) {
         auto diff = std::abs(value - upper_bound);
         value = lower_bound + diff;
     }
     while (value < lower_bound) {
         auto diff = std::abs(value - lower_bound);
-        value = upper_bound - diff - 1;
+        value = upper_bound - diff;
     }
     return value;
 }
