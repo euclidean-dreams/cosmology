@@ -3,6 +3,7 @@
 #include <cmath>
 #include "constants.h"
 #include "macros.h"
+#include <list>
 
 namespace cosmology {
 
@@ -40,6 +41,36 @@ public:
     static float generate_proportion();
 
     static float generate_sign();
+};
+
+
+class SignalAverage {
+private:
+    lst<float> samples;
+    float sum;
+    size_t history_length;
+
+public:
+    float value;
+
+    SignalAverage(size_t history_length)
+            : samples{},
+              sum{0},
+              history_length{history_length} {
+
+    }
+
+    void add_sample(float sample) {
+        sum += sample;
+        samples.push_back(sample);
+
+        if (samples.size() > history_length) {
+            sum -= samples.front();
+            samples.pop_front();
+        }
+
+        value = sum / samples.size();
+    }
 };
 
 }

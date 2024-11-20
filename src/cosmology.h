@@ -17,7 +17,8 @@ enum Impressions {
     tyr,
     watercolor,
     workshop,
-    here_there_be_dragons
+    here_there_be_dragons,
+    obsidian
 };
 
 
