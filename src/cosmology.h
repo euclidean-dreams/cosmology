@@ -18,7 +18,11 @@ enum Impressions {
     watercolor,
     workshop,
     here_there_be_dragons,
-    obsidian
+    obsidian,
+    curvature,
+    linework,
+    gnarl,
+    knit
 };
 
 

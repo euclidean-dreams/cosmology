@@ -11,6 +11,10 @@
 #include "impressions/workshop.h"
 #include "impressions/here_there_be_dragons.h"
 #include "impressions/obsidian.h"
+#include "impressions/curvature.h"
+#include "impressions/linework.h"
+#include "impressions/gnarl.h"
+#include "impressions/knit.h"
 
 namespace cosmology {
 
@@ -57,6 +61,14 @@ Cosmology::Cosmology(int observation_width, int observation_height, int luon_cou
         impression = mkuptr<here_there_be_dragons::HereThereBeDragons>(*psyche);
     } else if (impression_choice == Impressions::obsidian) {
         impression = mkuptr<obsidian::Obsidian>(*psyche);
+    } else if (impression_choice == Impressions::curvature) {
+        impression = mkuptr<curvature::Curvature>(*psyche);
+    } else if (impression_choice == Impressions::linework) {
+        impression = mkuptr<linework::Linework>(*psyche);
+    } else if (impression_choice == Impressions::gnarl) {
+        impression = mkuptr<gnarl::Gnarl>(*psyche);
+    } else if (impression_choice == Impressions::knit) {
+        impression = mkuptr<knit::Knit>(*psyche);
     }
 }
 

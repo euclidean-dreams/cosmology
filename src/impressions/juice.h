@@ -4,8 +4,8 @@
 #include "impression.h"
 
 using namespace cosmology;
-namespace juice {
 
+namespace juice {
 class Lissajous : public Name {
 public:
     Luon &luon;
@@ -16,13 +16,12 @@ public:
     float direction;
 
     Lissajous(Luon &luon, Luon &upper_partial, Point origin, HSLColor color)
-            : luon{luon},
-              upper_partial{upper_partial},
-              origin{origin},
-              loci{},
-              color{color},
-              direction{scflt(Randomizer::generate_proportion() * 2 * M_PI)} {
-
+        : luon{luon},
+          upper_partial{upper_partial},
+          origin{origin},
+          loci{},
+          color{color},
+          direction{scflt(Randomizer::generate_proportion() * 2 * M_PI)} {
     }
 
     void paint(Lattice &lattice) {
@@ -40,7 +39,13 @@ public:
             }
             for (auto &point: loci) {
                 auto adjusted_point = Point{origin.x + point.x, origin.y + point.y};
-                lattice.set_pith(adjusted_point.x, adjusted_point.y, Pith{color.convert_to_rgb(), 1});
+                int hue = cyclic_embind(0, COLOR + luon.index + 2, HSL_HUE_MAX);
+                auto current_color = HSLColor{hue, color.saturation, color.lightness};
+                auto brush_size = 1;
+                for (int i = 0; i < brush_size; i++) {
+                    lattice.set_pith(scint(adjusted_point.x + i), scint(adjusted_point.y),
+                                     Pith{current_color.convert_to_rgb(), luon.energy});
+                }
             }
         }
     }
@@ -50,17 +55,17 @@ public:
         origin = Point::from_polar(origin, distance, direction);
         if (origin.x < 0) {
             origin.x = 0;
-            direction += M_PI;
+            direction += M_PI * Randomizer::generate_proportion() + M_PI / 2;
         } else if (origin.x >= OBSERVATION_WIDTH) {
             origin.x = OBSERVATION_WIDTH - 1;
-            direction += M_PI;
+            direction += M_PI * Randomizer::generate_proportion() + M_PI / 2;
         }
         if (origin.y < 0) {
             origin.y = 0;
-            direction += M_PI;
+            direction += M_PI * Randomizer::generate_proportion() + M_PI / 2;
         } else if (origin.y >= OBSERVATION_HEIGHT) {
             origin.y = OBSERVATION_HEIGHT - 1;
-            direction += M_PI;
+            direction += M_PI * Randomizer::generate_proportion() + M_PI / 2;
         }
     }
 };
@@ -72,8 +77,8 @@ private:
 
 public:
     Juice(Psyche &psyche)
-            : psyche{psyche},
-              curves{} {
+        : psyche{psyche},
+          curves{} {
         vect<int> luon_indices{};
         luon_indices.reserve(LUON_COUNT);
         for (int i = 0; i < LUON_COUNT; i++) {
@@ -84,9 +89,11 @@ public:
         for (auto &luon: *harmony->luons) {
             float x = Randomizer::generate(OBSERVATION_WIDTH);
             float y = Randomizer::generate(OBSERVATION_HEIGHT);
-            auto color = HSLColor{Randomizer::generate(HSL_HUE_MAX),
-                                  50 + Randomizer::generate(50),
-                                  33 + Randomizer::generate(50)};
+            auto color = HSLColor{
+                Randomizer::generate(HSL_HUE_MAX),
+                50 + Randomizer::generate(50),
+                33 + Randomizer::generate(50)
+            };
             auto upper_partial_index = index * 2;
             if (upper_partial_index < harmony->luons->size()) {
                 sptr<Luon> upper_partial = (*harmony->luons)[upper_partial_index];
@@ -108,5 +115,4 @@ public:
         return lattice;
     }
 };
-
 }

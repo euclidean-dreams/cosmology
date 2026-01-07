@@ -58,6 +58,31 @@ Point Point::from_polar(Point origin, float radius, float theta) {
     return Point{x, y};
 }
 
+Line Line::from_shift(Line line, float distance) {
+    float correction = M_PI;
+    if (line.p1.x <= line.p2.x) {
+        correction = 0;
+    }
+    float offset = std::atan((line.p2.y - line.p1.y) / (line.p2.x - line.p1.x));
+    auto p3 = Point{
+        scflt(distance * std::cos(M_PI / 2 + offset + correction) + line.p1.x),
+        scflt(distance * std::sin(M_PI / 2 + offset + correction) + line.p1.y)
+    };
+    auto p4 = Point{
+        scflt(distance * std::cos(M_PI / 2 + offset + correction) + line.p2.x),
+        scflt(distance * std::sin(M_PI / 2 + offset + correction) + line.p2.y)
+    };
+    return Line{p3, p4};
+}
+
+Quadrangle Quadrangle::from_extrusion(Line line, float distance) {
+    auto l1 = line;
+    auto l2 = Line::from_shift(line, distance);
+    auto l3 = Line{l1.p1, l2.p1};
+    auto l4 = Line{l1.p2, l2.p2};
+    return Quadrangle{l1, l3, l2, l4};
+}
+
 Lattice::Lattice(int width, int height, Pith null_pith, bool tessellate) :
         piths{},
         width{width},

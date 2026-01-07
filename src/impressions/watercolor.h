@@ -36,7 +36,8 @@ public:
         int index = 0;
         for (auto &point: loci) {
             int lightness = color.lightness + index;
-            auto current_color = HSLColor{color.hue, color.saturation, lightness};
+            int hue = cyclic_embind(0, COLOR + luon.index * 2, HSL_HUE_MAX);
+            auto current_color = HSLColor{hue, color.saturation, lightness};
             auto adjusted_point = Point{origin.x + point.x, origin.y + point.y};
             auto radius = MAGNITUDE * (luon.energy * 9 - index);
             if (radius > MAGNITUDE * OBSERVATION_WIDTH / 9) {
@@ -56,17 +57,17 @@ public:
         origin = Point::from_polar(origin, distance, direction);
         if (origin.x < 0) {
             origin.x = 0;
-            direction += M_PI;
+            direction += M_PI * Randomizer::generate_proportion() + M_PI / 2;
         } else if (origin.x >= OBSERVATION_WIDTH) {
             origin.x = OBSERVATION_WIDTH - 1;
-            direction += M_PI;
+            direction += M_PI * Randomizer::generate_proportion() + M_PI / 2;
         }
         if (origin.y < 0) {
             origin.y = 0;
-            direction += M_PI;
+            direction += M_PI * Randomizer::generate_proportion() + M_PI / 2;
         } else if (origin.y >= OBSERVATION_HEIGHT) {
             origin.y = OBSERVATION_HEIGHT - 1;
-            direction += M_PI;
+            direction += M_PI * Randomizer::generate_proportion() + M_PI / 2;
         }
         auto center_drift_direction = std::atan2(scflt(OBSERVATION_HEIGHT) / 2 - origin.y,
                                                  scflt(OBSERVATION_WIDTH) / 2 - origin.x);
