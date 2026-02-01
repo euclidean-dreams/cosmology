@@ -22,7 +22,9 @@ enum Impressions {
     curvature,
     linework,
     gnarl,
-    knit
+    knit,
+    meshwork,
+    spherics
 };
 
 

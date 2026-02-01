@@ -15,6 +15,9 @@
 #include "impressions/linework.h"
 #include "impressions/gnarl.h"
 #include "impressions/knit.h"
+#include "impressions/meshwork.h"
+#include "impressions/spherics.h"
+
 
 namespace cosmology {
 
@@ -69,6 +72,10 @@ Cosmology::Cosmology(int observation_width, int observation_height, int luon_cou
         impression = mkuptr<gnarl::Gnarl>(*psyche);
     } else if (impression_choice == Impressions::knit) {
         impression = mkuptr<knit::Knit>(*psyche);
+    } else if (impression_choice == Impressions::meshwork) {
+        impression = mkuptr<meshwork::Meshwork>(*psyche);
+    } else if (impression_choice == Impressions::spherics) {
+        impression = mkuptr<spherics::Spherics>(*psyche);
     }
 }
 

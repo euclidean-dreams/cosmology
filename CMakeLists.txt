@@ -43,7 +43,8 @@ set(
         src/impressions/linework.h
         src/impressions/gnarl.h
         src/impressions/knit.h
-
+        src/impressions/meshwork.h
+        src/impressions/spherics.h
         src/palettes/centrifugal_palette.h
 )
 add_library(cosmology STATIC ${SOURCE_FILES})

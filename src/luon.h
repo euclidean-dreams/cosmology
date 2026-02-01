@@ -2,8 +2,8 @@
 
 #include "axioms.h"
 
-namespace cosmology {
 
+namespace cosmology {
 #define SMOOTH_LOG_HISTORY_LENGTH 3
 
 class Luon : public Name {
@@ -20,8 +20,8 @@ public:
     float proportion = 0;
 
     Luon(int index) :
-            index{index},
-            prior_log_energies{} {
+        index{index},
+        prior_log_energies{} {
     }
 
     void excite(sptr<Signal<float>> &signal, float signal_energy) {
@@ -53,8 +53,16 @@ class Harmony : public Name {
 public:
     uptr<vect<sptr<Luon>>> luons;
 
-    Harmony(uptr<vect<sptr<Luon>>> luons) : luons{mv(luons)} {
+    Harmony(uptr<vect<sptr<Luon>>> luons)
+        : luons{mv(luons)} {
+    }
 
+    float energy() {
+        float energy = 0;
+        for (auto &luon: *luons) {
+            energy += luon->energy;
+        }
+        return energy;
     }
 };
 
@@ -87,6 +95,9 @@ public:
         }
         return mkuptr<Harmony>(mv(luons_in_harmony));
     }
-};
 
+    vect<sptr<Luon>>::size_type size() {
+        return luons.size();
+    }
+};
 }
