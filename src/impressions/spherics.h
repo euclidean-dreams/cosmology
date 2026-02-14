@@ -24,10 +24,10 @@ public:
             auto x = rho * std::sin(theta) * std::cos(phi);
             auto y = rho * std::sin(theta) * std::sin(phi);
             auto z = rho * cos(theta);
-            auto magnitude = scint(luon.energy) * 9;
+            auto magnitude = scint(luon.energy);
             auto palette_color = palette.get_color();
             auto color = HSLColor(palette_color.hue, embind(25, magnitude, 100), embind(0, magnitude, 100));
-            auto pith = Pith{color.convert_to_rgb(), 1};
+            auto pith = Pith{color.convert_to_rgb(), 3};
             auto screen_x = scint(x) + scint(origin.x);
             auto screen_y = scint(z) + scint(origin.y);
             lattice.set_pith(screen_x, screen_y, pith);
