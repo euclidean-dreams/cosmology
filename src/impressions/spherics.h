@@ -10,13 +10,15 @@ namespace spherics {
 class Path : public Name {
 public:
     Luon &luon;
+    int harmony_index;
 
-    Path(Luon &luon)
-        : luon{luon} {
+    Path(Luon &luon, int harmony_size)
+        : luon{luon},
+          harmony_index{harmony_size} {
     }
 
     void paint(Point origin, Lattice &lattice, CentrifugalPalette &palette) {
-        auto max_t = scint(luon.energy) * 99;
+        auto max_t = scint(luon.energy) * 33;
         for (auto t = 0; t < max_t; t++) {
             auto rho = 33 + luon.smooth_log * 9 * MAGNITUDE;
             auto theta = luon.energy / 33 * scflt(t) * ((2 * M_PI) / max_t) * TWIST;
@@ -24,9 +26,11 @@ public:
             auto x = rho * std::sin(theta) * std::cos(phi);
             auto y = rho * std::sin(theta) * std::sin(phi);
             auto z = rho * cos(theta);
-            auto magnitude = scint(luon.energy);
+            auto color_magnitude = scint(luon.smooth_log) * 11;
             auto palette_color = palette.get_color();
-            auto color = HSLColor(palette_color.hue, embind(25, magnitude, 100), embind(0, magnitude, 100));
+            auto saturation = embind(25, color_magnitude, 100);
+            auto lightness = embind(25, color_magnitude, 100);
+            auto color = HSLColor(palette_color.hue, saturation, lightness);
             auto pith = Pith{color.convert_to_rgb(), 3};
             auto screen_x = scint(x) + scint(origin.x);
             auto screen_y = scint(z) + scint(origin.y);
@@ -52,14 +56,14 @@ public:
         if (root_luon.index == 0) {
             luon_indices.push_back(0);
         } else {
-            for (int i = root_luon.index; i < psyche.size(); i = i + root_luon.index) {
-                luon_indices.push_back(i);
-            }
+            luon_indices.push_back(root_luon.index);
         }
         harmony = psyche.create_harmony(luon_indices);
+        auto harmony_index = 0;
         for (auto &luon: *harmony->luons) {
-            auto path = mkuptr<Path>(*luon);
+            auto path = mkuptr<Path>(*luon, harmony_index);
             paths.push_back(mv(path));
+            harmony_index++;
         }
 
         auto palette_harmony = psyche.create_harmony(luon_indices);
@@ -78,7 +82,7 @@ public:
     }
 
     void move() {
-        float distance = std::abs(harmony->energy() / 33) * MOVEMENT;
+        float distance = std::abs(harmony->energy() / 99) * MOVEMENT;
         origin = Point::from_polar(origin, distance, direction);
         if (origin.x < 0) {
             origin.x = 0;
