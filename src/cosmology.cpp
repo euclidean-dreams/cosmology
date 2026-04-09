@@ -17,10 +17,10 @@
 #include "impressions/knit.h"
 #include "impressions/meshwork.h"
 #include "impressions/spherics.h"
+#include "impressions/ambiance.h"
 
 
 namespace cosmology {
-
 int OBSERVATION_WIDTH;
 int OBSERVATION_HEIGHT;
 int LUON_COUNT;
@@ -35,7 +35,7 @@ int THREAD_COUNT = std::thread::hardware_concurrency();
 int RENDER_TIMEOUT_MICROSECONDS = 5000;
 
 Cosmology::Cosmology(int observation_width, int observation_height, int luon_count, Impressions impression_choice)
-        : current_observation{} {
+    : current_observation{} {
     OBSERVATION_WIDTH = observation_width;
     OBSERVATION_HEIGHT = observation_height;
     LUON_COUNT = luon_count;
@@ -76,6 +76,8 @@ Cosmology::Cosmology(int observation_width, int observation_height, int luon_cou
         impression = mkuptr<meshwork::Meshwork>(*psyche);
     } else if (impression_choice == Impressions::spherics) {
         impression = mkuptr<spherics::Spherics>(*psyche);
+    } else if (impression_choice == Impressions::ambiance) {
+        impression = mkuptr<ambiance::Ambiance>(*psyche);
     }
 }
 
@@ -86,5 +88,4 @@ void Cosmology::experience(sptr<Signal<float>> &signal) {
 uptr<Lattice> Cosmology::observe() {
     return impression->experience();
 }
-
 }

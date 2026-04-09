@@ -45,7 +45,10 @@ set(
         src/impressions/knit.h
         src/impressions/meshwork.h
         src/impressions/spherics.h
+        src/impressions/ambiance.h
+
         src/palettes/centrifugal_palette.h
+        src/palettes/damper_palette.h
 )
 add_library(cosmology STATIC ${SOURCE_FILES})
 target_include_directories(cosmology PUBLIC src)

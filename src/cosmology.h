@@ -24,7 +24,8 @@ enum Impressions {
     gnarl,
     knit,
     meshwork,
-    spherics
+    spherics,
+    ambiance
 };
 
 
