@@ -1,6 +1,7 @@
 #include "interfaces.h"
 
 namespace cosmology {
+#ifdef threads_found
 
 uptr<std::thread> Circlet::begin(std::unique_ptr<Circlet> circlet) {
     auto thread = mkuptr<std::thread>(circle, mv(circlet));
@@ -18,4 +19,5 @@ void Circlet::circle(std::unique_ptr<Circlet> circlet) {
     }
 }
 
+#endif
 }

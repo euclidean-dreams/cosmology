@@ -16,6 +16,8 @@ protected:
     Name() = default;
 };
 
+#ifdef threads_found
+
 class Circlet : public Name {
 public:
     virtual ~Circlet() = default;
@@ -31,4 +33,5 @@ public:
     static void circle(uptr<Circlet> circlet);
 };
 
+#endif
 }

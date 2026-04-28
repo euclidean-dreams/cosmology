@@ -212,6 +212,8 @@ public:
     }
 };
 
+#ifdef threads_found
+
 template <class T>
 class Arbiter : public Name {
 private:
@@ -255,4 +257,6 @@ public:
 
     void clean();
 };
+
+#endif
 }

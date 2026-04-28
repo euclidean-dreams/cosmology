@@ -128,6 +128,8 @@ void Lattice::meld(Lattice &other) {
     }
 }
 
+#ifdef threads_found
+
 Antechamber::Antechamber(int desired_loungers) :
         mutex{},
         notifier{},
@@ -150,5 +152,5 @@ void Antechamber::clean() {
     current_loungers = 0;
 }
 
-
+#endif
 }
