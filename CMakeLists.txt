@@ -46,9 +46,20 @@ set(
         src/impressions/meshwork.h
         src/impressions/spherics.h
         src/impressions/ambiance.h
+        src/impressions/allegory/allegory.h
+        src/impressions/allegory/allegorion/allegorion.h
 
         src/palettes/centrifugal_palette.h
         src/palettes/damper_palette.h
 )
 add_library(cosmology STATIC ${SOURCE_FILES})
 target_include_directories(cosmology PUBLIC src)
+
+find_package(Threads)
+message("threads found?")
+if(Threads_FOUND)
+    message(STATUS "threads found!")
+    add_compile_definitions(threads_found)
+else ()
+    message(STATUS "threads unfounded")
+endif()

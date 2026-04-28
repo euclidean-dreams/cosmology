@@ -26,7 +26,7 @@ public:
         for (auto &luon: *harmony->luons) {
             harmony_flux += std::abs(luon->delta);
         }
-        hue_mod += harmony_flux / 33;
+        hue_mod += harmony_flux / 777;
         if (hue_mod >= 0.1) {
             hue_mod -= hue_mod / 10;
         }

@@ -25,7 +25,8 @@ enum Impressions {
     knit,
     meshwork,
     spherics,
-    ambiance
+    ambiance,
+    allegory
 };
 
 

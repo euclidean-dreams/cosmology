@@ -18,6 +18,7 @@
 #include "impressions/meshwork.h"
 #include "impressions/spherics.h"
 #include "impressions/ambiance.h"
+#include "impressions/allegory/allegory.h"
 
 
 namespace cosmology {
@@ -78,6 +79,8 @@ Cosmology::Cosmology(int observation_width, int observation_height, int luon_cou
         impression = mkuptr<spherics::Spherics>(*psyche);
     } else if (impression_choice == Impressions::ambiance) {
         impression = mkuptr<ambiance::Ambiance>(*psyche);
+    } else if (impression_choice == Impressions::allegory) {
+        impression = mkuptr<allegory::Allegory>(*psyche);
     }
 }
 
