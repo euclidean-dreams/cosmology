@@ -6,11 +6,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 project(cosmology)
 
+###############
+## threading ##
+###############
 find_package(Threads)
 message("threads found?")
 if (Threads_FOUND)
     message(STATUS "threads found!")
-    add_compile_definitions(threads_found)
     set(threads_found ON)
 else ()
     message(STATUS "threads unfounded")
@@ -71,3 +73,9 @@ if (threads_found)
 endif ()
 add_library(cosmology STATIC ${SOURCE_FILES})
 target_include_directories(cosmology PUBLIC src)
+
+add_library(cosmology_selections INTERFACE)
+if (threads_found)
+    target_compile_definitions(cosmology_selections INTERFACE threads_found)
+endif ()
+target_link_libraries(cosmology PRIVATE cosmology_selections)

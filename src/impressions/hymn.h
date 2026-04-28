@@ -54,7 +54,7 @@ public:
 
 
     void move() {
-        float distance = (0.1 + abs(luon.delta / 5)) * MOVEMENT;
+        float distance = scflt(0.1 + std::abs(luon.delta / 5)) * MOVEMENT;
         origin = Point::from_polar(origin, distance, move_direction);
 
         if (origin.x < 0) {

@@ -23,7 +23,7 @@ enum Impressions {
     meshwork,
     spherics,
     ambiance,
-    allegory
+    allegory,
 
 #ifdef threads_found
     hymn,
