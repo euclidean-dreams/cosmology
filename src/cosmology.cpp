@@ -5,9 +5,7 @@
 #include "impressions/bubbles.h"
 #include "impressions/calibration.h"
 #include "impressions/happy_pink_hearts.h"
-#include "impressions/hymn.h"
 #include "impressions/puff.h"
-#include "impressions/tyr.h"
 #include "impressions/workshop.h"
 #include "impressions/here_there_be_dragons.h"
 #include "impressions/obsidian.h"
@@ -20,6 +18,10 @@
 #include "impressions/ambiance.h"
 #include "impressions/allegory/allegory.h"
 
+#ifdef threads_found
+#include "impressions/hymn.h"
+#include "impressions/tyr.h"
+#endif
 
 namespace cosmology {
 int OBSERVATION_WIDTH;
@@ -49,14 +51,10 @@ Cosmology::Cosmology(int observation_width, int observation_height, int luon_cou
         impression = mkuptr<calibration::Calibration>(*psyche);
     } else if (impression_choice == Impressions::happy_pink_hearts) {
         impression = mkuptr<happy_pink_hearts::HappyPinkHearts>(*psyche);
-    } else if (impression_choice == Impressions::hymn) {
-        impression = mkuptr<hymn::Hymn>(*psyche);
     } else if (impression_choice == Impressions::juice) {
         impression = mkuptr<juice::Juice>(*psyche);
     } else if (impression_choice == Impressions::puff) {
         impression = mkuptr<puff::Puff>(*psyche);
-    } else if (impression_choice == Impressions::tyr) {
-        impression = mkuptr<tyr::Tyr>(*psyche);
     } else if (impression_choice == Impressions::watercolor) {
         impression = mkuptr<watercolor::Watercolor>(*psyche);
     } else if (impression_choice == Impressions::workshop) {
@@ -82,6 +80,14 @@ Cosmology::Cosmology(int observation_width, int observation_height, int luon_cou
     } else if (impression_choice == Impressions::allegory) {
         impression = mkuptr<allegory::Allegory>(*psyche);
     }
+
+#ifdef threads_found
+    else if (impression_choice == Impressions::tyr) {
+        impression = mkuptr<tyr::Tyr>(*psyche);
+    } else if (impression_choice == Impressions::hymn) {
+        impression = mkuptr<hymn::Hymn>(*psyche);
+    }
+#endif
 }
 
 void Cosmology::experience(sptr<Signal<float>> &signal) {

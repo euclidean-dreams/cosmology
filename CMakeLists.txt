@@ -11,10 +11,10 @@ message("threads found?")
 if (Threads_FOUND)
     message(STATUS "threads found!")
     add_compile_definitions(threads_found)
-    set(only_axioms OFF)
+    set(threads_found ON)
 else ()
     message(STATUS "threads unfounded")
-    set(only_axioms ON)
+    set(threads_found OFF)
 endif ()
 
 
@@ -23,6 +23,10 @@ endif ()
 ############
 set(
         SOURCE_FILES
+
+        src/luon.h
+        src/cosmology.cpp src/cosmology.h
+
         src/axioms.h
         src/axioms/constants.h
         src/axioms/interfaces.cpp src/axioms/interfaces.h
@@ -31,41 +35,38 @@ set(
         src/axioms/primitive.cpp src/axioms/primitive.h
         src/axioms/time.cpp src/axioms/time.h
         src/axioms/premise.h
+
+        src/perception/equalizer.h
+        src/perception/ring_buffer.h
+
+        src/palettes/centrifugal_palette.h
+        src/palettes/damper_palette.h
+
+        src/impressions/impression.h
+        src/impressions/happy_pink_hearts.h
+        src/impressions/workshop.h
+        src/impressions/bubbles.h src/impressions/bubbles.cpp
+        src/impressions/puff.h
+        src/impressions/barometer.h
+        src/impressions/calibration.h
+        src/impressions/watercolor.h
+        src/impressions/juice.h
+        src/impressions/here_there_be_dragons.h
+        src/impressions/obsidian.h
+        src/impressions/curvature.h
+        src/impressions/linework.h
+        src/impressions/gnarl.h
+        src/impressions/knit.h
+        src/impressions/meshwork.h
+        src/impressions/spherics.h
+        src/impressions/ambiance.h
+        src/impressions/allegory/allegory.h
+        src/impressions/allegory/allegorion/allegorion.h
 )
-if (NOT only_axioms)
+if (threads_found)
     set(
-            src/luon.h
-            src/cosmology.cpp src/cosmology.h
-
-
-            src/perception/equalizer.h
-            src/perception/ring_buffer.h
-
-            src/impressions/impression.h
-            src/impressions/happy_pink_hearts.h
-            src/impressions/workshop.h
-            src/impressions/bubbles.h src/impressions/bubbles.cpp
             src/impressions/hymn.h
             src/impressions/tyr.h
-            src/impressions/puff.h
-            src/impressions/barometer.h
-            src/impressions/calibration.h
-            src/impressions/watercolor.h
-            src/impressions/juice.h
-            src/impressions/here_there_be_dragons.h
-            src/impressions/obsidian.h
-            src/impressions/curvature.h
-            src/impressions/linework.h
-            src/impressions/gnarl.h
-            src/impressions/knit.h
-            src/impressions/meshwork.h
-            src/impressions/spherics.h
-            src/impressions/ambiance.h
-            src/impressions/allegory/allegory.h
-            src/impressions/allegory/allegorion/allegorion.h
-
-            src/palettes/centrifugal_palette.h
-            src/palettes/damper_palette.h
     )
 endif ()
 add_library(cosmology STATIC ${SOURCE_FILES})

@@ -5,16 +5,13 @@
 #include "impressions/impression.h"
 
 namespace cosmology {
-
 enum Impressions {
     barometer,
     bubbles,
     calibration,
     happy_pink_hearts,
-    hymn,
     juice,
     puff,
-    tyr,
     watercolor,
     workshop,
     here_there_be_dragons,
@@ -27,6 +24,11 @@ enum Impressions {
     spherics,
     ambiance,
     allegory
+
+#ifdef threads_found
+    hymn,
+    tyr,
+#endif
 };
 
 
@@ -43,5 +45,4 @@ public:
 
     uptr<Lattice> observe();
 };
-
 }
