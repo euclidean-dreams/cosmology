@@ -13,7 +13,7 @@ private:
     Psyche &psyche;
     vect<uptr<Harmony>> chorus;
     vect<uptr<Allegorion>> allegorions;
-    uptr<DamperPalette> palette;
+    uptr<CentrifugalPalette> palette;
 
 public:
     Allegory(Psyche &psyche)
@@ -32,16 +32,17 @@ public:
         // allegorions
         auto index = 0;
         for (auto &allegorion_harmony: chorus) {
-            int x = index;
-            int y = 0;
-            auto allegorion = mkuptr<Allegorion>(*allegorion_harmony, Point{x, y});
+            int x = Randomizer::generate(OBSERVATION_WIDTH);
+            int y = Randomizer::generate(OBSERVATION_HEIGHT);
+            auto &fundamental = *(*(chorus[index])->luons)[index];
+            auto allegorion = mkuptr<Allegorion>(chorus, fundamental, Point{x, y}, HSLColor{0, 100, 50});
             allegorions.push_back(mv(allegorion));
             index++;
         }
 
         // palette
         auto palette_harmony = psyche.create_harmony(luon_indices);
-        palette = mkuptr<DamperPalette>(mv(palette_harmony));
+        palette = mkuptr<CentrifugalPalette>(mv(palette_harmony), 33);
     }
 
     uptr<Lattice> experience() override {

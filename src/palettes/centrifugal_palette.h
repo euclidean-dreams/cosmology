@@ -17,7 +17,7 @@ public:
             harmony{mv(harmony)},
             signal_average{signal_average_history_length},
             hue{181},
-            flux_divisor{1} {
+            flux_divisor{33} {
 
     }
 

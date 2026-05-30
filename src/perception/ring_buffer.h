@@ -36,9 +36,9 @@ public:
         for (int i = 0; i < count; i++) {
             *write_iterator = samples[i];
             write_iterator++;
-        }
-        if (write_iterator >= internal_buffer.end()) {
-            write_iterator = internal_buffer.begin();
+            if (write_iterator >= internal_buffer.end()) {
+                write_iterator = internal_buffer.begin();
+            }
         }
         if (next_signal_is_ready()) {
             signal_added_expectant.notify_all();

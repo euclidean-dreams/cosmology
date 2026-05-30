@@ -4,7 +4,7 @@
 
 
 namespace cosmology {
-#define SMOOTH_LOG_HISTORY_LENGTH 3
+#define SMOOTH_LOG_HISTORY_LENGTH 33
 
 class Luon : public Name {
 public:
