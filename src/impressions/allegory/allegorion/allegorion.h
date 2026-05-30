@@ -28,13 +28,11 @@ public:
         origin = Point::from_polar(origin, movement_magnitude, direction);
         direction += 0.01 * fundamental.delta;
 
-        auto theta = origin.x;
-        auto phi = origin.y;
-        float circumference = OBSERVATION_WIDTH;
-        float depth = OBSERVATION_HEIGHT;
+        auto theta = origin.y;
+        auto circumference = scflt(OBSERVATION_HEIGHT);
         Point cardinal{
-            scflt(circumference / 2 * std::cos(theta / 2 + M_PI) + circumference / 2),
-            scflt(depth / 2 * std::cos(phi / 2 + M_PI) + depth / 2)
+            cyclic_embind_flt(0, origin.x, scflt(OBSERVATION_WIDTH)),
+            scflt(circumference / 2 * std::cos(theta / 2 + M_PI) + circumference / 2)
         };
 
         auto color_magnitude = fundamental.smooth_log * 33;

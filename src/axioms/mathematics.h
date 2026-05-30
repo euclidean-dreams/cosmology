@@ -31,6 +31,18 @@ static inline float embind_flt(float lower_bound, float value, float upper_bound
     return value;
 }
 
+static inline float cyclic_embind_flt(float lower_bound, float value, float upper_bound) {
+    while (value >= upper_bound) {
+        auto diff = std::abs(value - upper_bound);
+        value = lower_bound + diff;
+    }
+    while (value < lower_bound) {
+        auto diff = std::abs(value - lower_bound);
+        value = upper_bound - diff;
+    }
+    return value;
+}
+
 class Randomizer {
 private:
     static int generate_number(int exclusive_max);
@@ -54,10 +66,9 @@ public:
     float value;
 
     SignalAverage(size_t history_length)
-            : samples{},
-              sum{0},
-              history_length{history_length} {
-
+        : samples{},
+          sum{0},
+          history_length{history_length} {
     }
 
     void add_sample(float sample) {
@@ -72,5 +83,4 @@ public:
         value = sum / samples.size();
     }
 };
-
 }
