@@ -1,10 +1,11 @@
 #pragma once
 
-#include "paradigm.h"
+#include "axioms.h"
 #include <kfr/dft.hpp>
 #include <kfr/dsp/window.hpp>
 
-namespace euclid {
+namespace cosmology {
+
 #ifdef QUETZAL
 #define WINDOW_SIZE 1
 #else

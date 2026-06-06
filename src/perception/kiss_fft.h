@@ -3,7 +3,7 @@
 #include "axioms.h"
 #include "kissfft/kiss_fftr.h"
 
-namespace euclid {
+namespace cosmology {
 
 #define WINDOW_SIZE 8
 #define FFT_SIZE scast<size_t>(WINDOW_SIZE * FRAME_SIZE)
