@@ -14,6 +14,11 @@
         ################
         add_library(cosmology_selections INTERFACE)
 
+        set(FFT_FRAME_SIZE 512  CACHE STRING "likes to be a power of 2 >= 256")
+        set(FFT_WINDOW_SIZE 8  CACHE STRING "likes to be 8")
+        target_compile_definitions(cosmology_selections INTERFACE FFT_FRAME_SIZE=${FFT_FRAME_SIZE})
+        target_compile_definitions(cosmology_selections INTERFACE FFT_WINDOW_SIZE=${FFT_WINDOW_SIZE})
+
         ###############
         ## threading ##
         ###############
