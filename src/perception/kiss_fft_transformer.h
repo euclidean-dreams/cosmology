@@ -4,9 +4,7 @@
 #include "kiss_fftr.h"
 
 namespace cosmology {
-
-#define WINDOW_SIZE 8
-#define FFT_SIZE scast<size_t>(WINDOW_SIZE * FRAME_SIZE)
+#define FFT_SIZE scast<size_t>(FFT_WINDOW_SIZE * FFT_FRAME_SIZE)
 #define STFT_SIZE (FFT_SIZE / 2 + 1)
 
 enum class WindowFunction {
@@ -32,8 +30,8 @@ private:
 
 public:
     FourierTransform()
-            : window_function{WindowFunction::hamming},
-              fft_plan(kiss_fftr_alloc(FFT_SIZE, 0, nullptr, nullptr)) {
+        : window_function{WindowFunction::hamming},
+          fft_plan(kiss_fftr_alloc(FFT_SIZE, 0, nullptr, nullptr)) {
         fft_input.resize(FFT_SIZE);
         fft_output.resize(FFT_SIZE);
     }
@@ -43,7 +41,7 @@ public:
     }
 
     uptr<Signal<cmplx>> stft(uptr<Signal<float>> signal) {
-        if (input_signals.size() < WINDOW_SIZE) {
+        if (input_signals.size() < FFT_WINDOW_SIZE) {
             // waiting for enough input signals to operate on...
             input_signals.push_back(mv(signal));
             return nullptr;
@@ -62,7 +60,9 @@ public:
                 } else if (window_function == WindowFunction::hamming) {
                     fft_input[fft_input_index] = sample * hamming_window(fft_input_index);
                 } else {
+#ifdef threads_found
                     throw std::logic_error{"invalid window function selected"};
+#endif
                 }
                 fft_input_index++;
             }
@@ -76,7 +76,5 @@ public:
         }
         return result;
     }
-
 };
-
 }
