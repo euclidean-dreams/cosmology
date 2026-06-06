@@ -71,6 +71,21 @@ if (threads_found)
             src/impressions/tyr.h
     )
 endif ()
+
+if (kfr)
+    set(
+            SOURCE_FILES
+            ${SOURCE_FILES}
+            src/perception/kfr_fft.h
+    )
+else ()
+    set(
+            SOURCE_FILES
+            ${SOURCE_FILES}
+            src/perception/kiss_fft.h
+    )
+endif ()
+
 add_library(cosmology STATIC ${SOURCE_FILES})
 target_include_directories(cosmology PUBLIC src)
 
