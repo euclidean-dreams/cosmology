@@ -82,14 +82,15 @@ if (kfr)
     )
 else ()
     message(STATUS "fft's with be performed with kissfft")
+    SET(KISSFFT_TOOLS OFF)
+    SET(KISSFFT_TEST OFF)
+    SET(KISSFFT_STATIC ON)
     add_subdirectory(lib/kissfft)
     set(
             SOURCE_FILES
             ${SOURCE_FILES}
             src/perception/kiss_fft.h
     )
-    SET(KISSFFT_TOOLS OFF)
-    SET(KISSFFT_TEST OFF)
 endif ()
 
 add_library(cosmology STATIC ${SOURCE_FILES})
