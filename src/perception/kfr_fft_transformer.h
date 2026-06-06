@@ -11,7 +11,7 @@ namespace cosmology {
 #else
 #define WINDOW_SIZE 8
 #endif
-#define FFT_SIZE scast<size_t>(WINDOW_SIZE * FRAME_SIZE)
+#define FFT_SIZE scast<size_t>(FFT_WINDOW_SIZE * FFT_FRAME_SIZE)
 #define STFT_SIZE (FFT_SIZE / 2 + 1)
 
 
