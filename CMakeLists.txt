@@ -73,12 +73,18 @@ if (threads_found)
 endif ()
 
 if (kfr)
+    message(STATUS "fft's with be performed with kfr")
     set(
             SOURCE_FILES
             ${SOURCE_FILES}
             src/perception/kfr_fft.h
     )
+    add_compile_definitions(KFR_FFT)
 else ()
+    message(STATUS "fft's with be performed with kissfft")
+    set(KISSFFT_TEST OFF)
+    add_subdirectory(lib/kissfft)
+    add_compile_definitions(KISS_FFT)
     set(
             SOURCE_FILES
             ${SOURCE_FILES}
@@ -94,3 +100,9 @@ if (threads_found)
     target_compile_definitions(cosmology_selections INTERFACE threads_found)
 endif ()
 target_link_libraries(cosmology PRIVATE cosmology_selections)
+
+if (kfr)
+    target_link_libraries(euclid PRIVATE kfr kfr_dft)
+else ()
+    target_link_libraries(cosmology PRIVATE kissfft)
+endif ()
