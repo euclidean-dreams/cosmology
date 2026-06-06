@@ -74,6 +74,7 @@ endif ()
 
 if (kfr)
     message(STATUS "fft's with be performed with kfr")
+    find_package(KFR CONFIG REQUIRED)
     set(
             SOURCE_FILES
             ${SOURCE_FILES}
@@ -81,14 +82,14 @@ if (kfr)
     )
 else ()
     message(STATUS "fft's with be performed with kissfft")
-    SET(KISSFFT_TOOLS OFF)
-    SET(KISSFFT_TEST OFF)
     add_subdirectory(lib/kissfft)
     set(
             SOURCE_FILES
             ${SOURCE_FILES}
             src/perception/kiss_fft.h
     )
+    SET(KISSFFT_TOOLS OFF)
+    SET(KISSFFT_TEST OFF)
 endif ()
 
 add_library(cosmology STATIC ${SOURCE_FILES})
