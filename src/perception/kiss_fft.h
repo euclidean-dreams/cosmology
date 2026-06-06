@@ -1,7 +1,7 @@
 #pragma once
 
 #include "axioms.h"
-#include "kissfft/kiss_fftr.h"
+#include "kiss_fftr.h"
 
 namespace cosmology {
 
