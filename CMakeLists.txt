@@ -78,7 +78,7 @@ if (kfr)
     set(
             SOURCE_FILES
             ${SOURCE_FILES}
-            src/perception/kfr_fft.h
+            src/perception/kfr_fft_transformer.h
     )
 else ()
     message(STATUS "fft's with be performed with kissfft")
@@ -89,12 +89,13 @@ else ()
     set(
             SOURCE_FILES
             ${SOURCE_FILES}
-            src/perception/kiss_fft.h
+            src/perception/kiss_fft_transformer.h
     )
 endif ()
 
 add_library(cosmology STATIC ${SOURCE_FILES})
 target_include_directories(cosmology PUBLIC src)
+target_include_directories(cosmology PUBLIC lib/kissfft)
 
 add_library(cosmology_selections INTERFACE)
 if (threads_found)
