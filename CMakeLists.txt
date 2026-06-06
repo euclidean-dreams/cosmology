@@ -14,11 +14,6 @@
         ################
         add_library(cosmology_selections INTERFACE)
 
-        option(fft_frame_size "likes to be a power of 2 >= 256" 512)
-        option(fft_window_size "likes to be 8" 8)
-        target_compile_definitions(cosmology_selections INTERFACE FFT_FRAME_SIZE=${fft_frame_size})
-        target_compile_definitions(cosmology_selections INTERFACE FFT_WINDOW_SIZE=${fft_window_size})
-
         ###############
         ## threading ##
         ###############
