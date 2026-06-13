@@ -35,7 +35,7 @@ public:
             int x = Randomizer::generate(OBSERVATION_WIDTH);
             int y = Randomizer::generate(OBSERVATION_HEIGHT);
             auto &fundamental = *(*(chorus[index])->luons)[index];
-            auto allegorion = mkuptr<Allegorion>(chorus, fundamental, Point{x, y}, HSLColor{0, 100, 50});
+            auto allegorion = mkuptr<Firefly>(chorus, fundamental, Point{x, y}, HSLColor{0, 100, 50});
             allegorions.push_back(mv(allegorion));
             index++;
         }
