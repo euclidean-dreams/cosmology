@@ -24,6 +24,7 @@ enum Impressions {
     spherics,
     ambiance,
     allegory,
+    fireflies,
 
 #ifdef threads_found
     hymn,

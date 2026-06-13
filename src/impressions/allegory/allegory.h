@@ -11,13 +11,15 @@ namespace allegory {
 class Allegory : public Impression {
 private:
     Psyche &psyche;
+    int mode;
     vect<uptr<Harmony>> chorus;
     vect<uptr<Allegorion>> allegorions;
     uptr<CentrifugalPalette> palette;
 
 public:
-    Allegory(Psyche &psyche)
-        : psyche{psyche} {
+    Allegory(Psyche &psyche, int mode)
+        : psyche{psyche},
+          mode{mode} {
         // harmony
         vect<int> luon_indices{};
         luon_indices.reserve(psyche.size());
@@ -35,7 +37,14 @@ public:
             int x = Randomizer::generate(OBSERVATION_WIDTH);
             int y = Randomizer::generate(OBSERVATION_HEIGHT);
             auto &fundamental = *(*(chorus[index])->luons)[index];
-            auto allegorion = mkuptr<Firefly>(chorus, fundamental, Point{x, y}, HSLColor{0, 100, 50});
+
+            uptr<Allegorion> allegorion;
+            if (mode == 1) {
+                allegorion = mkuptr<Firefly>(chorus, fundamental, Point{x, y}, HSLColor{0, 100, 50});
+            } else {
+                allegorion = mkuptr<Allegorion>(chorus, fundamental, Point{x, y}, HSLColor{0, 100, 50});
+            }
+
             allegorions.push_back(mv(allegorion));
             index++;
         }
