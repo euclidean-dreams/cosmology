@@ -24,7 +24,26 @@ public:
           direction{scflt(2 * M_PI * Randomizer::generate_proportion())} {
     }
 
-    virtual void sing(Lattice &lattice, CentrifugalPalette &palette) {
+    virtual void sing(Lattice &lattice, CentrifugalPalette &palette) = 0;
+
+    Point toroidalize(Point origin) {
+        auto theta = origin.y;
+        auto circumference = scflt(OBSERVATION_HEIGHT);
+        Point cardinal{
+            cyclic_embind_flt(0, origin.x, scflt(OBSERVATION_WIDTH)),
+            scflt(circumference / 2 * std::cos(theta / 2 + M_PI) + circumference / 2)
+        };
+        return cardinal;
+    }
+};
+
+class Fireflies : public Allegorion {
+public:
+    Fireflies(vect<uptr<Harmony>> &chorus, Luon &fundamental, Point origin, HSLColor color)
+        : Allegorion(chorus, fundamental, origin, color) {
+    }
+
+    void sing(Lattice &lattice, CentrifugalPalette &palette) override {
         float movement_magnitude = 0.01 + 0.01 * fundamental.energy;
         origin = Point::from_polar(origin, movement_magnitude, direction);
         direction += 0.01 * fundamental.delta;
@@ -39,21 +58,11 @@ public:
         color.lightness = embind_flt(0, color_magnitude, 100);
         lattice.set_pith(scint(cardinal.x), scint(cardinal.y), Pith{color.convert_to_rgb(), 1});
     }
-
-    Point toroidalize(Point origin) {
-        auto theta = origin.y;
-        auto circumference = scflt(OBSERVATION_HEIGHT);
-        Point cardinal{
-            cyclic_embind_flt(0, origin.x, scflt(OBSERVATION_WIDTH)),
-            scflt(circumference / 2 * std::cos(theta / 2 + M_PI) + circumference / 2)
-        };
-        return cardinal;
-    }
 };
 
-class Firefly : public Allegorion {
+class Toroidaloids : public Allegorion {
 public:
-    Firefly(vect<uptr<Harmony>> &chorus, Luon &fundamental, Point origin, HSLColor color)
+    Toroidaloids(vect<uptr<Harmony>> &chorus, Luon &fundamental, Point origin, HSLColor color)
         : Allegorion(chorus, fundamental, origin, color) {
     }
 

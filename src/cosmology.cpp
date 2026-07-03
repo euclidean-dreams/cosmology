@@ -77,7 +77,7 @@ Cosmology::Cosmology(int observation_width, int observation_height, int luon_cou
         impression = mkuptr<spherics::Spherics>(*psyche);
     } else if (impression_choice == Impressions::ambiance) {
         impression = mkuptr<ambiance::Ambiance>(*psyche);
-    } else if (impression_choice == Impressions::allegory) {
+    } else if (impression_choice == Impressions::toroidaloids) {
         impression = mkuptr<allegory::Allegory>(*psyche, 0);
     } else if (impression_choice == Impressions::fireflies) {
         impression = mkuptr<allegory::Allegory>(*psyche, 1);

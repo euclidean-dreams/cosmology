@@ -39,10 +39,12 @@ public:
             auto &fundamental = *(*(chorus[index])->luons)[index];
 
             uptr<Allegorion> allegorion;
-            if (mode == 1) {
-                allegorion = mkuptr<Firefly>(chorus, fundamental, Point{x, y}, HSLColor{0, 100, 50});
+            if (mode == 0) {
+                allegorion = mkuptr<Toroidaloids>(chorus, fundamental, Point{x, y}, HSLColor{0, 100, 50});
+            } else if (mode == 1) {
+                allegorion = mkuptr<Fireflies>(chorus, fundamental, Point{x, y}, HSLColor{0, 100, 50});
             } else {
-                allegorion = mkuptr<Allegorion>(chorus, fundamental, Point{x, y}, HSLColor{0, 100, 50});
+                allegorion = mkuptr<Toroidaloids>(chorus, fundamental, Point{x, y}, HSLColor{0, 100, 50});
             }
 
             allegorions.push_back(mv(allegorion));

@@ -1,3 +1,10 @@
+        ############
+        ## config ##
+        ############
+        ## FFT Parameters
+        # add FFT_FRAME_SIZE and FFT_WINDOW_SIZE as compile definitions
+        # good defaults are FFT_FRAME_SIZE=512 and FFT_WINDOW_SIZE=8
+        # FFT_FRAME_SIZE likes to be a power of 2 >= 256
 
 
         ##########
@@ -13,12 +20,6 @@
         ## selections ##
         ################
         add_library(cosmology_selections INTERFACE)
-
-        # likes to be a power of 2 >= 256
-        target_compile_definitions(cosmology_selections INTERFACE FFT_FRAME_SIZE=512)
-
-        # likes to be eightish
-        target_compile_definitions(cosmology_selections INTERFACE FFT_WINDOW_SIZE=8)
 
         ###############
         ## threading ##
